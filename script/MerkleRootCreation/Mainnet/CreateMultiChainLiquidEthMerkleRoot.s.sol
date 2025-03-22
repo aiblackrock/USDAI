@@ -54,14 +54,14 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         borrowAssets[1] = getERC20(sourceChain, "WEETH");
         borrowAssets[2] = getERC20(sourceChain, "WSTETH");
         borrowAssets[3] = getERC20(sourceChain, "RETH");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // ========================== SparkLend ==========================
         borrowAssets = new ERC20[](3);
         borrowAssets[0] = getERC20(sourceChain, "WETH");
         borrowAssets[1] = getERC20(sourceChain, "WSTETH");
         borrowAssets[2] = getERC20(sourceChain, "RETH");
-        _addSparkLendLeafs(leafs, supplyAssets, borrowAssets);
+        _addSparkLendLeafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // ========================== Aave V3 Lido ==========================
         supplyAssets = new ERC20[](2);
@@ -69,7 +69,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         supplyAssets[1] = getERC20(sourceChain, "WSTETH");
         borrowAssets = new ERC20[](1);
         borrowAssets[0] = getERC20(sourceChain, "WETH");
-        _addAaveV3LidoLeafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3LidoLeafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // ========================== Lido ==========================
         _addLidoLeafs(leafs);
