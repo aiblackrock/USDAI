@@ -4,7 +4,7 @@ pragma solidity 0.8.21;
 import {Deployer} from "src/helper/Deployer.sol";
 import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 import {ContractNames} from "resources/ContractNames.sol";
-import {SonicAddresses} from "test/resources/SonicAddresses.sol";
+import {MinatoAddresses} from "test/resources/MinatoAddresses.sol";
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
@@ -13,7 +13,7 @@ import "forge-std/StdJson.sol";
  *  source .env && forge script script/DeployDeployer.s.sol:DeployDeployerScript --evm-version london --broadcast --etherscan-api-key $BSCSCAN_KEY --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
-contract DeployDeployerScript is Script, ContractNames, SonicAddresses {
+contract DeployDeployerScript is Script, ContractNames, MinatoAddresses {
     uint256 public privateKey;
 
     // Contracts to deploy
@@ -24,7 +24,7 @@ contract DeployDeployerScript is Script, ContractNames, SonicAddresses {
 
     function setUp() external {
         privateKey = vm.envUint("PRIVATE_KEY");
-        vm.createSelectFork("sonic_testnet");
+        vm.createSelectFork("minato");
     }
 
     function run() external {

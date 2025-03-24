@@ -252,4 +252,13 @@ contract ContractNames {
     string public constant SFRXETHRateProviderName = "SFRXETH Generic Rate Provider V0.0";
     string public constant WEETHRateProviderName = "weETH Generic Rate Provider V0.0";
     string public constant sdeUSDRateProviderName = "sdeUSD Generic Rate Provider V0.0";
+
+    // USDAI in minato
+    string public constant UsdaiMinatoVaultRolesAuthorityName = "USDAI Minato Vault RolesAuthority V0.0";
+    string public constant UsdaiMinatoVaultName = "USDAI Minato Vault V0.0";
+    string public constant UsdaiMinatoVaultManagerName = "USDAI Minato Vault Manager With Merkle Verification V0.0";
+    string public constant UsdaiMinatoVaultAccountantName = "USDAI Minato Vault Accountant With Rate Providers V0.0";
+    string public constant UsdaiMinatoVaultTellerName = "USDAI Minato Vault Teller With Multi Asset Support V0.0";
+    string public constant UsdaiMinatoVaultDecoderAndSanitizerName = "USDAI Minato Vault Decoder and Sanitizer V0.0";
+    string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.0";
 }
