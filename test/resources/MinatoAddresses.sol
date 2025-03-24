@@ -5,7 +5,7 @@ import {ERC20} from "@solmate/tokens/ERC20.sol";
 
 contract MinatoAddresses {
     // Liquid Ecosystem
-    address public deployerAddress = 0xF4013adA42b3bfD745063D5803750347a6F4b298;
+    address public deployerAddress = 0xEd56Ece1D50Ee955a33dB586D79cDaCadC1BE0a5;
     address public dev0Address = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
     address public dev1Address = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
     address public liquidV1PriceRouter = 0x693799805B502264f9365440B93C113D86a4fFF5;

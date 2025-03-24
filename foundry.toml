@@ -41,7 +41,7 @@ minato = "${MINATO_RPC_URL}"
 # arbitrum = { key = "${ARBISCAN_KEY}" }
 # optimism = { key = "${OPTIMISMSCAN_KEY}" }
 # base = { key = "${BASESCAN_KEY}" }
-minato = { key = "${MINATOSCAN_KEY}", chain = 1946, url = "https://soneium-minato.blockscout.com/api" }
+minato = { key = "${SONEIUM_KEY}", chain = 1946, url = "https://soneium-minato.blockscout.com/api" }
 
 [fmt]
 FOUNDRY_FMT_LINE_LENGTH = 120
