@@ -22,6 +22,8 @@ contract ChainValues {
     string public constant fraxtal = "fraxtal";
     string public constant corn = "corn";
     string public constant holesky = "holesky";
+    string public constant minato = "minato";
+    string public constant soneium = "soneium";
 
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
@@ -88,6 +90,7 @@ contract ChainValues {
 
         // Add testnet values
         _addHoleskyValues();
+        _addMinatoValues();
     }
 
     function _addMainnetValues() private {
@@ -1170,6 +1173,12 @@ contract ChainValues {
 
         // Symbiotic
         values[holesky]["wstETHSymbioticVault"] = 0x89D62D1d89d8636367fc94998b3bE095a3d9c2f9.toBytes32();
+    }
+    function _addMinatoValues() private {
+        values[minato]["deployerAddress"] = 0xEd56Ece1D50Ee955a33dB586D79cDaCadC1BE0a5.toBytes32();
+        values[minato]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[minato]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[minato]["ASTR"] = 0x26e6f7c7047252DdE3dcBF26AA492e6a264Db655.toBytes32();
     }
 
     function _addMantleValues() private {
