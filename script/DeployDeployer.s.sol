@@ -38,7 +38,7 @@ contract DeployDeployerScript is Script, ContractNames, MinatoAddresses {
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(dev0Address, Authority(address(0)));
         rolesAuthority =
-            RolesAuthority(deployer.deployContract(SevenSeasRolesAuthorityName, creationCode, constructorArgs, 0));
+            RolesAuthority(deployer.deployContract(UsdaiMinatoVaultRolesAuthorityName, creationCode, constructorArgs, 0));
 
         deployer.setAuthority(rolesAuthority);
 
