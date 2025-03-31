@@ -10,133 +10,159 @@ import {ArcticArchitectureLens} from "src/helper/ArcticArchitectureLens.sol";
 import {AccountantWithRateProviders} from "src/base/Roles/AccountantWithRateProviders.sol";
 import {MinatoAddresses} from "test/resources/MinatoAddresses.sol";
 import {BoringOnChainQueue} from "src/base/Roles/BoringQueue/BoringOnChainQueue.sol";
+import {BoringOnChainQueueWithTracking} from "src/base/Roles/BoringQueue/BoringOnChainQueueWithTracking.sol";
 import {BoringSolver} from "src/base/Roles/BoringQueue/BoringSolver.sol";
+import {Deployer} from "src/helper/Deployer.sol";
+import {ContractNames} from "resources/ContractNames.sol";
+import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {console} from "forge-std/console.sol";
+import {RolesAuthority, Authority} from "@solmate/auth/authorities/RolesAuthority.sol";
 
 /**
  * @title USDAI Withdraw Request Solve Script
- * @notice This script solves a withdrawal request from the USDAI vault on Minato using the BoringSolver
+ * @notice This script solves all withdrawal requests from the USDAI vault on Minato using the BoringSolver
  * @dev Run with: forge script script/DeployedUSDAI/Minato/WithdrawRequestSolve.s.sol --rpc-url $MINATO_RPC_URL -vvvv
  */
-contract USDAIWithdrawRequestSolveScript is Script, MinatoAddresses {
+contract USDAIWithdrawRequestSolveScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
     using SafeTransferLib for ERC20;
-
-    // Core contract addresses from deployment
-    address public constant BORING_VAULT = 0x214E3B8099596697116FD934BbdB3903451a27b0;
-    address public constant TELLER = 0x3cc9069a8e143E7fD4f4Fd593EB720416933877b;
-    address public constant ACCOUNTANT = 0x664d42c3057a2f835505f39cFf48f6983d2f2c60;
-    address public constant LENS = 0x904BAE52c17bC5Aa59c64B6b4C96c06034d080F4;
-
-    // Queue and solver contract addresses
-    address public constant BORING_QUEUE = 0xAc0f96de42527F0aB6935d2C309cf7aF65B042e9;
-    address public constant BORING_SOLVER = 0x0E6afe0a279dd6E8b2AF495F39Cbf5222c26c157; 
     
     // Contract instances
+    Deployer public deployer;
     BoringVault vault;
     TellerWithMultiAssetSupport teller;
     ArcticArchitectureLens lens;
     AccountantWithRateProviders accountant;
-    BoringOnChainQueue queue;
+    BoringOnChainQueueWithTracking queue;
     BoringSolver solver;
 
-    // Request ID to solve (will be set via command line)
-    bytes32 requestIdToSolve;
-
     function setUp() public {
-        // Create a fork of Minato network
         vm.createSelectFork("minato");
+        setSourceChainName("minato");
         
-        // Initialize contract instances
-        vault = BoringVault(payable(BORING_VAULT));
-        teller = TellerWithMultiAssetSupport(TELLER);
-        lens = ArcticArchitectureLens(LENS);
-        accountant = AccountantWithRateProviders(ACCOUNTANT);
-        queue = BoringOnChainQueue(BORING_QUEUE);
-        solver = BoringSolver(BORING_SOLVER);
+        deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
+        teller = TellerWithMultiAssetSupport(deployer.getAddress(UsdaiMinatoVaultTellerName));
+        lens = ArcticArchitectureLens(deployer.getAddress(UsdaiMinatoArcticArchitectureLensName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiMinatoVaultAccountantName));
+        queue = BoringOnChainQueueWithTracking(deployer.getAddress(UsdaiMinatoVaultQueueName));
+        solver = BoringSolver(deployer.getAddress(UsdaiMinatoVaultQueueSolverName));
     }
 
     function run() public {
-        // Get the private key from environment variable
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
-        // address user = vm.addr(privateKey);
-        
-        // Start broadcasting transactions
         vm.startBroadcast(privateKey);
         
-        console.log("=== Solving Withdrawal Request ===");
+        console.log("=== Solving Withdrawal Requests by Solver ===");
         
-        // // Get the withdrawal request
-        // BoringOnChainQueue.OnChainWithdraw memory request = queue.getOnChainWithdraw(requestIdToSolve);
+        // Get all withdrawal requests
+        (bytes32[] memory requestIds, BoringOnChainQueue.OnChainWithdraw[] memory requests) = queue.getWithdrawRequests();
         
-        // // Validate the request
-        // if (request.user == address(0)) {
-        //     console.log("Request not found or invalid!");
-        //     vm.stopBroadcast();
-        //     return;
-        // }
+        if (requestIds.length == 0) {
+            console.log("No withdrawal requests found!");
+            vm.stopBroadcast();
+            return;
+        }
         
-        // console.log("Request details:");
-        // console.log("  User:", request.user);
-        // console.log("  Asset out:", request.assetOut);
-        // console.log("  Amount of shares:", request.amountOfShares / 1e6, "shares");
-        // console.log("  Amount of assets:", request.amountOfAssets / 1e6, "assets");
+        console.log("Found %d withdrawal requests", requestIds.length);
         
-        // // Check if request is matured
-        // uint256 maturityTime = request.creationTime + request.secondsToMaturity;
-        // if (block.timestamp < maturityTime) {
-        //     console.log("Request is not yet matured. Cannot solve.");
-        //     console.log("Current time:", block.timestamp);
-        //     console.log("Maturity time:", maturityTime);
-        //     console.log("Time until maturity:", maturityTime - block.timestamp, "seconds");
-        //     vm.stopBroadcast();
-        //     return;
-        // }
+        // Filter requests by maturity and deadline
+        uint256 validRequestCount = 0;
+        for (uint256 i = 0; i < requests.length; i++) {
+            BoringOnChainQueue.OnChainWithdraw memory request = requests[i];
+            
+            // Check if request is matured
+            uint256 maturityTime = request.creationTime + request.secondsToMaturity;
+            if (block.timestamp < maturityTime) {
+                console.log("Request %d is not yet matured. Skipping.", i);
+                continue;
+            }
+            
+            // Check if deadline has passed
+            uint256 deadlineTime = maturityTime + request.secondsToDeadline;
+            if (block.timestamp > deadlineTime) {
+                console.log("Request %d deadline has passed. Skipping.", i);
+                continue;
+            }
+            
+            // Move valid request to the front of the array
+            if (i != validRequestCount) {
+                requests[validRequestCount] = request;
+            }
+            validRequestCount++;
+        }
         
-        // // Check if deadline has passed
-        // uint256 deadlineTime = maturityTime + request.secondsToDeadline;
-        // if (block.timestamp > deadlineTime) {
-        //     console.log("Request deadline has passed. Cannot solve.");
-        //     console.log("Current time:", block.timestamp);
-        //     console.log("Deadline time:", deadlineTime);
-        //     vm.stopBroadcast();
-        //     return;
-        // }
+        if (validRequestCount == 0) {
+            console.log("No valid withdrawal requests to solve!");
+            vm.stopBroadcast();
+            return;
+        }
         
-        // // Create an array with the single request to solve
-        // BoringOnChainQueue.OnChainWithdraw[] memory requests = new BoringOnChainQueue.OnChainWithdraw[](1);
-        // requests[0] = request;
+        // Create a new array with only valid requests
+        BoringOnChainQueue.OnChainWithdraw[] memory validRequests = new BoringOnChainQueue.OnChainWithdraw[](validRequestCount);
+        for (uint256 i = 0; i < validRequestCount; i++) {
+            validRequests[i] = requests[i];
+        }
         
-        // // Check solver's asset balance before solving
-        // ERC20 assetOut = ERC20(request.assetOut);
-        // uint256 assetBalanceBefore = assetOut.balanceOf(user);
-        // console.log("Solver's asset balance before:", assetBalanceBefore / 10**assetOut.decimals());
+        console.log("Processing %d valid withdrawal requests", validRequestCount);
         
-        // // Check if solver has enough assets
-        // if (assetBalanceBefore < request.amountOfAssets) {
-        //     console.log("Warning: Solver may not have enough assets to cover the withdrawal!");
-        //     console.log("Required:", request.amountOfAssets / 10**assetOut.decimals());
-        //     console.log("Available:", assetBalanceBefore / 10**assetOut.decimals());
-        // }
+        // Group requests by asset
+        address[] memory uniqueAssets = new address[](validRequestCount);
+        uint256 uniqueAssetCount = 0;
         
-        // // Approve assets for the solver if needed
-        // if (assetOut.allowance(user, address(solver)) < request.amountOfAssets) {
-        //     console.log("Approving assets for the solver...");
-        //     assetOut.safeApprove(address(solver), type(uint256).max);
-        // }
+        for (uint256 i = 0; i < validRequestCount; i++) {
+            address assetOut = validRequests[i].assetOut;
+            bool isUnique = true;
+            
+            for (uint256 j = 0; j < uniqueAssetCount; j++) {
+                if (uniqueAssets[j] == assetOut) {
+                    isUnique = false;
+                    break;
+                }
+            }
+            
+            if (isUnique) {
+                uniqueAssets[uniqueAssetCount] = assetOut;
+                uniqueAssetCount++;
+            }
+        }
         
-        // console.log("\nCalling boringRedeemSolve...");
+        // Process each asset group separately
+        for (uint256 assetIndex = 0; assetIndex < uniqueAssetCount; assetIndex++) {
+            address assetOut = uniqueAssets[assetIndex];
+            ERC20 asset = ERC20(assetOut);
+            
+            // Count requests for this asset
+            uint256 assetRequestCount = 0;
+            for (uint256 i = 0; i < validRequestCount; i++) {
+                if (validRequests[i].assetOut == assetOut) {
+                    assetRequestCount++;
+                }
+            }
+            
+            // Create array of requests for this asset
+            BoringOnChainQueue.OnChainWithdraw[] memory assetRequests = new BoringOnChainQueue.OnChainWithdraw[](assetRequestCount);
+            uint256 totalAssetsNeeded = 0;
+            uint256 requestIndex = 0;
+            
+            for (uint256 i = 0; i < validRequestCount; i++) {
+                if (validRequests[i].assetOut == assetOut) {
+                    assetRequests[requestIndex] = validRequests[i];
+                    totalAssetsNeeded += validRequests[i].amountOfAssets;
+                    requestIndex++;
+                }
+            }
+            
+            console.log("\n=== Processing %d requests for asset %s ===", assetRequestCount, assetOut);
+            console.log("Total assets needed: %d", totalAssetsNeeded / 10**asset.decimals());
+            
+            console.log("Calling boringRedeemSolve...");
+            
+            solver.boringRedeemSolve(assetRequests, address(teller));
+            
+            console.log("Withdrawal requests solved!");
+        }
         
-        // // Following the pattern from testRedeemSolve in BoringQueue.t.sol
-        // uint256 assetDelta = assetOut.balanceOf(user);
-        // solver.boringRedeemSolve(requests, TELLER);
-        // assetDelta = assetOut.balanceOf(user) - assetDelta;
-        
-        // console.log("\n=== Withdrawal Request Solved ===");
-        // console.log("User received:", request.amountOfAssets / 10**assetOut.decimals(), "assets");
-        // console.log("Solver's asset delta:", assetDelta / 10**assetOut.decimals(), "assets");
-        
-        // // Check solver's final balance
-        // uint256 assetBalanceAfter = assetOut.balanceOf(user);
-        // console.log("Solver's asset balance after:", assetBalanceAfter / 10**assetOut.decimals());
+        console.log("\n=== All Withdrawal Requests Processed ===");
         
         vm.stopBroadcast();
     }
