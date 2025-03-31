@@ -51,7 +51,7 @@ contract USDAIWithdrawRequestScript is Script, MinatoAddresses, ContractNames, M
         
         initialShares = vault.balanceOf(user);
         
-        withdrawShares = initialShares / 2;
+        withdrawShares = 1 * 1e6;
         vm.startBroadcast(privateKey);
         
         console.log("=== Initial State ===");
@@ -64,7 +64,7 @@ contract USDAIWithdrawRequestScript is Script, MinatoAddresses, ContractNames, M
         console.log("Value of shares in USDC:", sharesValue / 1e6, "USDC");
         
         // Check if user has shares to withdraw
-        if (initialShares > 0) {
+        if (initialShares > withdrawShares) {
             console.log("\n=== Requesting Withdrawal via Queue ===");
             console.log("Requesting withdrawal of shares amount:", withdrawShares / 1e6, "shares");
             
@@ -73,7 +73,7 @@ contract USDAIWithdrawRequestScript is Script, MinatoAddresses, ContractNames, M
             
             // Set discount and deadline parameters
             uint16 discount = 3; // 3 basis points discount (0.03%)
-            uint24 secondsToDeadline = 5 minutes;
+            uint24 secondsToDeadline = 10 minutes;
             
             // Request withdrawal through queue
             bytes32 requestId = queue.requestOnChainWithdraw(

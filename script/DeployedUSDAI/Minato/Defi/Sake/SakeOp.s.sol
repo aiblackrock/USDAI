@@ -36,7 +36,7 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
 
     function run() public {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
-        address auth = vm.addr(privateKey);
+        // address auth = vm.addr(privateKey);
         
         vm.startBroadcast(privateKey);
         

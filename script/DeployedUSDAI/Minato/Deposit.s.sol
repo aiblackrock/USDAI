@@ -19,8 +19,8 @@ import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper
  */
 contract USDAIDepositScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
     // Test parameters
-    uint256 public constant USDC_DEPOSIT_AMOUNT = 10 * 1e6; // 10 USDC (6 decimals)
-    uint256 public constant ASTR_DEPOSIT_AMOUNT = 10 * 1e18; // 10 ASTR (18 decimals)
+    uint256 public constant USDC_DEPOSIT_AMOUNT = 100 * 1e6; // 10 USDC (6 decimals)
+    uint256 public constant ASTR_DEPOSIT_AMOUNT = 100 * 1e18; // 10 ASTR (18 decimals)
     
     // Contract instances
     Deployer public deployer;
