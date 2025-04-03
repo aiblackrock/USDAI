@@ -163,6 +163,11 @@ contract DeploysUSDAIBoringQueuesScript is Script, ContractNames, MerkleTreeHelp
         );
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemSolve.selector, true);
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemMintSolve.selector, true);
+        rolesAuthority.setRoleCapability(
+            CAN_SOLVE_ROLE, address(queue), BoringOnChainQueue.solveOnChainWithdraws.selector, true
+        );
+        rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, address(queue), BoringSolver.boringRedeemSolve.selector, true);
+        rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, address(queue), BoringSolver.boringRedeemMintSolve.selector, true);
 
         // ONLY_QUEUE_ROLE
         rolesAuthority.setRoleCapability(ONLY_QUEUE_ROLE, solver, BoringSolver.boringSolve.selector, true);
