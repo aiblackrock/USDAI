@@ -793,7 +793,7 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
         if (configureDeployment.setupDepositAssets) {
             // Setup deposit asset.
             (bool allowDeposits,,) = teller.assetData(accountantParameters.base);
-            if (!allowDeposits) teller.updateAssetData(accountantParameters.base, true, false, 0);
+            if (!allowDeposits) teller.updateAssetData(accountantParameters.base, true, true, 0);
 
             // Setup extra deposit assets.
             for (uint256 i; i < depositAssets.length; i++) {
@@ -806,11 +806,11 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
                 if (depositAsset.isPeggedToBase) {
                     // Rate provider is not needed.
                     accountant.setRateProviderData(depositAsset.asset, true, address(0));
-                    teller.updateAssetData(depositAsset.asset, true, false, 0);
+                    teller.updateAssetData(depositAsset.asset, true, true, 0);
                 } else if (depositAsset.rateProvider != address(0)) {
                     // Rate provider is provided.
                     accountant.setRateProviderData(depositAsset.asset, false, depositAsset.rateProvider);
-                    teller.updateAssetData(depositAsset.asset, true, false, 0);
+                    teller.updateAssetData(depositAsset.asset, true, true, 0);
                 } else {
                     // We need a generic rate provider.
                     creationCode = type(GenericRateProvider).creationCode;
