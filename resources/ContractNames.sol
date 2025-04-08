@@ -264,4 +264,17 @@ contract ContractNames {
     string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.5";
     string public constant UsdaiMinatoVaultQueueName = "USDAI Minato Vault Queue V0.5";
     string public constant UsdaiMinatoVaultQueueSolverName = "USDAI Minato Vault Queue Solver V0.5";
+
+    // sUSDAI in minato
+    string public constant sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "sUSDAI Minato Boring OnChain Queues Roles Authority V0.5";
+    string public constant sUsdaiMinatoVaultRolesAuthorityName = "sUSDAI Minato Vault RolesAuthority V0.5";
+    string public constant sUsdaiMinatoArcticArchitectureLensName = "sUSDAI Minato Arctic Architecture Lens V0.5";
+    string public constant sUsdaiMinatoVaultName = "sUSDAI Minato Vault V0.5";
+    string public constant sUsdaiMinatoVaultManagerName = "sUSDAI Minato Vault Manager With Merkle Verification V0.5";
+    string public constant sUsdaiMinatoVaultAccountantName = "sUSDAI Minato Vault Accountant With Rate Providers V0.5";
+    string public constant sUsdaiMinatoVaultTellerName = "sUSDAI Minato Vault Teller With Multi Asset Support V0.5";
+    string public constant sUsdaiMinatoVaultDecoderAndSanitizerName = "sUSDAI Minato Vault Decoder and Sanitizer V0.5";
+    string public constant sUsdaiMinatoVaultDelayedWithdrawer = "sUSDAI Minato Vault Delayed Withdrawer V0.5";
+    string public constant sUsdaiMinatoVaultQueueName = "sUSDAI Minato Vault Queue V0.5";
+    string public constant sUsdaiMinatoVaultQueueSolverName = "sUSDAI Minato Vault Queue Solver V0.5";
 }
