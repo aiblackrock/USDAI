@@ -9,7 +9,6 @@ contract ContractNames {
     string public constant IncentiveDistributorName = "Incentive Distributor V0.1";
     string public constant PaymentSplitterName = "Payment Splitter V0.0";
     string public constant PaymentSplitterRolesAuthorityName = "Payment Splitter Roles Authority V0.0";
-    string public constant BoringOnChainQueuesRolesAuthorityName = "Boring OnChain Queues Roles Authority V0.1";
 
     // Migration
     string public constant CellarMigrationAdaptorName = "Cellar Migration Adaptor V0.1";
@@ -252,4 +251,30 @@ contract ContractNames {
     string public constant SFRXETHRateProviderName = "SFRXETH Generic Rate Provider V0.0";
     string public constant WEETHRateProviderName = "weETH Generic Rate Provider V0.0";
     string public constant sdeUSDRateProviderName = "sdeUSD Generic Rate Provider V0.0";
+
+    // USDAI in minato
+    string public constant UsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "USDAI Minato Boring OnChain Queues Roles Authority V0.5";
+    string public constant UsdaiMinatoVaultRolesAuthorityName = "USDAI Minato Vault RolesAuthority V0.5";
+    string public constant UsdaiMinatoArcticArchitectureLensName = "USDAI Minato Arctic Architecture Lens V0.5";
+    string public constant UsdaiMinatoVaultName = "USDAI Minato Vault V0.5";
+    string public constant UsdaiMinatoVaultManagerName = "USDAI Minato Vault Manager With Merkle Verification V0.5";
+    string public constant UsdaiMinatoVaultAccountantName = "USDAI Minato Vault Accountant With Rate Providers V0.5";
+    string public constant UsdaiMinatoVaultTellerName = "USDAI Minato Vault Teller With Multi Asset Support V0.5";
+    string public constant UsdaiMinatoVaultDecoderAndSanitizerName = "USDAI Minato Vault Decoder and Sanitizer V0.5";
+    string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.5";
+    string public constant UsdaiMinatoVaultQueueName = "USDAI Minato Vault Queue V0.5";
+    string public constant UsdaiMinatoVaultQueueSolverName = "USDAI Minato Vault Queue Solver V0.5";
+
+    // sUSDAI in minato
+    string public constant sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "sUSDAI Minato Boring OnChain Queues Roles Authority V0.5";
+    string public constant sUsdaiMinatoVaultRolesAuthorityName = "sUSDAI Minato Vault RolesAuthority V0.5";
+    string public constant sUsdaiMinatoArcticArchitectureLensName = "sUSDAI Minato Arctic Architecture Lens V0.5";
+    string public constant sUsdaiMinatoVaultName = "sUSDAI Minato Vault V0.5";
+    string public constant sUsdaiMinatoVaultManagerName = "sUSDAI Minato Vault Manager With Merkle Verification V0.5";
+    string public constant sUsdaiMinatoVaultAccountantName = "sUSDAI Minato Vault Accountant With Rate Providers V0.5";
+    string public constant sUsdaiMinatoVaultTellerName = "sUSDAI Minato Vault Teller With Multi Asset Support V0.5";
+    string public constant sUsdaiMinatoVaultDecoderAndSanitizerName = "sUSDAI Minato Vault Decoder and Sanitizer V0.5";
+    string public constant sUsdaiMinatoVaultDelayedWithdrawer = "sUSDAI Minato Vault Delayed Withdrawer V0.5";
+    string public constant sUsdaiMinatoVaultQueueName = "sUSDAI Minato Vault Queue V0.5";
+    string public constant sUsdaiMinatoVaultQueueSolverName = "sUSDAI Minato Vault Queue Solver V0.5";
 }

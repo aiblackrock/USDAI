@@ -51,7 +51,7 @@ contract CreateMultiChainLiquidEthMerkleRootScript is Script, MerkleTreeHelper {
         borrowAssets[0] = getERC20(sourceChain, "WETH");
         borrowAssets[1] = getERC20(sourceChain, "RETH");
         borrowAssets[2] = getERC20(sourceChain, "WSTETH");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // ========================== Native ==========================
         /**

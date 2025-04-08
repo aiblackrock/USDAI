@@ -48,7 +48,7 @@ contract CreateMultiChainTestMerkleRootScript is Script, MerkleTreeHelper {
         borrowAssets[1] = getERC20(sourceChain, "WEETH");
         borrowAssets[2] = getERC20(sourceChain, "WSTETH");
         borrowAssets[3] = getERC20(sourceChain, "RETH");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets);
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // ========================== Native ==========================
         /**

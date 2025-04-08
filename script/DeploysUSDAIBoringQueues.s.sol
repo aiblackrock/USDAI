@@ -13,6 +13,7 @@ import {BoringOnChainQueue} from "src/base/Roles/BoringQueue/BoringOnChainQueue.
 import {BoringOnChainQueueWithTracking} from "src/base/Roles/BoringQueue/BoringOnChainQueueWithTracking.sol";
 import {BoringSolver} from "src/base/Roles/BoringQueue/BoringSolver.sol";
 import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {MinatoAddresses} from "test/resources/MinatoAddresses.sol";
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
@@ -21,7 +22,7 @@ import {console} from "forge-std/console.sol";
  *  source .env && forge script script/DeployBoringQueues.s.sol:DeployBoringQueuesScript --with-gas-price 3000000000 --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
  * @dev Optionally can change `--with-gas-price` to something more reasonable
  */
-contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
+contract DeploysUSDAIBoringQueuesScript is Script, ContractNames, MerkleTreeHelper,MinatoAddresses {
     using AddressToBytes32Lib for address;
 
     uint256 public privateKey;
@@ -57,18 +58,17 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(devOwner, Authority(address(0)));
         RolesAuthority rolesAuthority = RolesAuthority(
-            deployer.deployContract(UsdaiMinatoBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
+            deployer.deployContract(sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
         );
 
-        // address[] memory assets = new address[](3);
-        address[] memory assets = new address[](2);
+        address[] memory assets = new address[](1);
         //============================== LiquidEth ===============================
-        assets[0] = getAddress(sourceChain, "ASTR");
-        assets[1] = getAddress(sourceChain, "USDC");
+        assets[0] = address(USDAI);
+
         // assets[1] = getAddress(sourceChain, "WEETH");
         // assets[2] = getAddress(sourceChain, "WSTETH");
         // BoringOnChainQueue.WithdrawAsset[] memory assetsToSetup = new BoringOnChainQueue.WithdrawAsset[](3);
-        BoringOnChainQueue.WithdrawAsset[] memory assetsToSetup = new BoringOnChainQueue.WithdrawAsset[](2);
+        BoringOnChainQueue.WithdrawAsset[] memory assetsToSetup = new BoringOnChainQueue.WithdrawAsset[](1);
         assetsToSetup[0] = BoringOnChainQueue.WithdrawAsset({
             allowWithdraws: true, // not used in script.
             secondsToMaturity: 3 minutes,
@@ -77,38 +77,14 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
             maxDiscount: 10,
             minimumShares: 0
         });
-        assetsToSetup[1] = BoringOnChainQueue.WithdrawAsset({
-            allowWithdraws: true, // not used in script.
-            secondsToMaturity: 3 minutes,
-            minimumSecondsToDeadline: 3 minutes,
-            minDiscount: 1,
-            maxDiscount: 10,
-            minimumShares: 0
-        });
 
-        // assetsToSetup[1] = BoringOnChainQueue.WithdrawAsset({
-        //     allowWithdraws: true, // not used in script.
-        //     secondsToMaturity: 7 days,
-        //     minimumSecondsToDeadline: 3 days,
-        //     minDiscount: 1,
-        //     maxDiscount: 10,
-        //     minimumShares: 0.0001e18
-        // });
-        // assetsToSetup[2] = BoringOnChainQueue.WithdrawAsset({
-        //     allowWithdraws: true, // not used in script.
-        //     secondsToMaturity: 7 days,
-        //     minimumSecondsToDeadline: 3 days,
-        //     minDiscount: 1,
-        //     maxDiscount: 10,
-        //     minimumShares: 0.0001e18
-        // });
         rolesAuthority.setUserRole(devOwner, SUPER_ADMIN_ROLE, true);
 
         _deployContracts(
-            UsdaiMinatoVaultName,
-            UsdaiMinatoVaultAccountantName,
-            UsdaiMinatoVaultQueueName,
-            UsdaiMinatoVaultQueueSolverName,
+            sUsdaiMinatoVaultName,
+            sUsdaiMinatoVaultAccountantName,
+            sUsdaiMinatoVaultQueueName,
+            sUsdaiMinatoVaultQueueSolverName,
             rolesAuthority,
             assets,
             assetsToSetup
@@ -187,6 +163,11 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         );
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemSolve.selector, true);
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemMintSolve.selector, true);
+        rolesAuthority.setRoleCapability(
+            CAN_SOLVE_ROLE, address(queue), BoringOnChainQueue.solveOnChainWithdraws.selector, true
+        );
+        rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, address(queue), BoringSolver.boringRedeemSolve.selector, true);
+        rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, address(queue), BoringSolver.boringRedeemMintSolve.selector, true);
 
         // ONLY_QUEUE_ROLE
         rolesAuthority.setRoleCapability(ONLY_QUEUE_ROLE, solver, BoringSolver.boringSolve.selector, true);
