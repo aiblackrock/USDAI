@@ -35,6 +35,8 @@ contract ChainValues {
     uint32 public constant layerZeroLineaEndpointId = 30183;
     uint32 public constant layerZeroScrollEndpointId = 30214;
     uint32 public constant layerZeroCornEndpointId = 30331; 
+    uint32 public constant layerZeroMinatoEndpointId = 40334;
+    uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
