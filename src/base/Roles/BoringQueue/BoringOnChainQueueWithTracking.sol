@@ -113,6 +113,47 @@ contract BoringOnChainQueueWithTracking is BoringOnChainQueue {
         return onChainWithdraws[requestId];
     }
 
+    /**
+     * @notice Get all withdraw requests for a specific user.
+     * @dev Includes requests that are not mature, matured, and expired. But does not include requests that have been solved.
+     * @param user The address of the user to get requests for
+     * @return requestIds Array of request IDs belonging to the user
+     * @return requests Array of OnChainWithdraw requests belonging to the user
+     */
+    function getWithdrawRequestsByUser(address user)
+        external
+        view
+        returns (bytes32[] memory requestIds, OnChainWithdraw[] memory requests)
+    {
+        bytes32[] memory allRequestIds = getRequestIds();
+        uint256 allRequestsLength = allRequestIds.length;
+        
+        // First count how many requests belong to this user
+        uint256 userRequestCount = 0;
+        for (uint256 i = 0; i < allRequestsLength; ++i) {
+            OnChainWithdraw memory request = onChainWithdraws[allRequestIds[i]];
+            if (request.user == user && request.nonce != 0) {
+                userRequestCount++;
+            }
+        }
+        
+        // Create arrays of the correct size
+        requestIds = new bytes32[](userRequestCount);
+        requests = new OnChainWithdraw[](userRequestCount);
+        
+        // Fill arrays with user's requests
+        uint256 currentIndex = 0;
+        for (uint256 i = 0; i < allRequestsLength; ++i) {
+            bytes32 requestId = allRequestIds[i];
+            OnChainWithdraw memory request = onChainWithdraws[requestId];
+            if (request.user == user && request.nonce != 0) {
+                requestIds[currentIndex] = requestId;
+                requests[currentIndex] = request;
+                currentIndex++;
+            }
+        }
+    }
+
     //============================= INTERNAL FUNCTIONS ==============================
 
     /**
