@@ -264,6 +264,7 @@ contract ContractNames {
     string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.5";
     string public constant UsdaiMinatoVaultQueueName = "USDAI Minato Vault Queue V0.5";
     string public constant UsdaiMinatoVaultQueueSolverName = "USDAI Minato Vault Queue Solver V0.5";
+    string public constant UsdaiMinatoLayerZeroTellerName = "USDAI Minato LayerZero Teller V0.2";
 
     // sUSDAI in minato
     string public constant sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "sUSDAI Minato Boring OnChain Queues Roles Authority V0.5";
@@ -277,7 +278,7 @@ contract ContractNames {
     string public constant sUsdaiMinatoVaultDelayedWithdrawer = "sUSDAI Minato Vault Delayed Withdrawer V0.5";
     string public constant sUsdaiMinatoVaultQueueName = "sUSDAI Minato Vault Queue V0.5";
     string public constant sUsdaiMinatoVaultQueueSolverName = "sUSDAI Minato Vault Queue Solver V0.5";
-
+    string public constant sUsdaiMinatoLayerZeroTellerName = "sUSDAI Minato LayerZero Teller V0.5";
     // USDAI in sepolia
     string public constant UsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "USDAI Sepolia Boring OnChain Queues Roles Authority V0.3";
     string public constant UsdaiSepoliaVaultRolesAuthorityName = "USDAI Sepolia Vault RolesAuthority V0.3";
@@ -290,6 +291,7 @@ contract ContractNames {
     string public constant UsdaiSepoliaVaultDelayedWithdrawer = "USDAI Sepolia Vault Delayed Withdrawer V0.3";
     string public constant UsdaiSepoliaVaultQueueName = "USDAI Sepolia Vault Queue V0.3";
     string public constant UsdaiSepoliaVaultQueueSolverName = "USDAI Sepolia Vault Queue Solver V0.3";
+    string public constant UsdaiSepoliaLayerZeroTellerName = "USDAI Sepolia LayerZero Teller V1.0";
 
     // sUSDAI in sepolia
     string public constant sUsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "sUSDAI Sepolia Boring OnChain Queues Roles Authority V0.1";
@@ -303,5 +305,5 @@ contract ContractNames {
     string public constant sUsdaiSepoliaVaultDelayedWithdrawer = "sUSDAI Sepolia Vault Delayed Withdrawer V0.1";
     string public constant sUsdaiSepoliaVaultQueueName = "sUSDAI Sepolia Vault Queue V0.1";
     string public constant sUsdaiSepoliaVaultQueueSolverName = "sUSDAI Sepolia Vault Queue Solver V0.1";
-    
+    string public constant sUsdaiSepoliaLayerZeroTellerName = "sUSDAI Sepolia LayerZero Teller V0.1";
 }
