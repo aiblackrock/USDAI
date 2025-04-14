@@ -28,6 +28,8 @@ contract ChainValues {
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
+    uint64 public constant ccipMinatoChainSelector = 686603546605904534;
+    uint64 public constant ccipSepoliaChainSelector = 16015286601757825753;
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -1185,6 +1187,8 @@ contract ChainValues {
         values[minato]["ASTR"] = 0x26e6f7c7047252DdE3dcBF26AA492e6a264Db655.toBytes32();
         values[minato]["USDC"] = 0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391.toBytes32();
         values[minato]["v3Pool"] = 0xEc38a5Cd88E87Fec0D10822DE8a3D6dB144931DA.toBytes32();
+        // CCIP token transfers.
+        values[minato]["ccipRouter"] = 0x443a1bce545d56E2c3f20ED32eA588395FFce0f4.toBytes32();
     }
 
     function _addSepoliaValues() private {
@@ -1192,6 +1196,8 @@ contract ChainValues {
         values[sepolia]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["USDC"] = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238.toBytes32();
+        // CCIP token transfers.
+        values[sepolia]["ccipRouter"] = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59.toBytes32();
     }
 
     function _addMantleValues() private {

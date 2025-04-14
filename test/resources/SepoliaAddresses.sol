@@ -12,6 +12,8 @@ contract SepoliaAddresses {
     // should be a multisig address!
     address public liquidPayoutAddress = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
 
+    address public ccipRouter = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59;
+
     ERC20 public USDC = ERC20(0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238);
     ERC20 public USDAI = ERC20(0x13a376a39FF662e9A6531A19F52d7FE303AcFc6B);
 }

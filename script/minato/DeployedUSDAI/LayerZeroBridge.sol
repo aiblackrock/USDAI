@@ -19,7 +19,7 @@ import {console} from "forge-std/console.sol";
  * @notice This script demonstrates how to deposit USDC and ASTR into the USDAI vault on Minato
  * @dev Run with: forge script script/USDAIIntegrationTest/Deposit.sol --rpc-url $MINATO_RPC_URL
  */
-contract USDAIBridgeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
+contract USDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
@@ -53,9 +53,9 @@ contract USDAIBridgeScript is Script, MinatoAddresses, ContractNames, MerkleTree
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
-        sourceTeller.addChain(layerZeroSepoliaEndpointId, true, true, destinationTellerAddress, 1000000);
-        sourceTeller.allowMessagesFromChain(layerZeroSepoliaEndpointId, destinationTellerAddress);
-        sourceTeller.allowMessagesToChain(layerZeroSepoliaEndpointId, destinationTellerAddress, 1000000);
+        // sourceTeller.addChain(layerZeroSepoliaEndpointId, true, true, destinationTellerAddress, 1000000);
+        // sourceTeller.allowMessagesFromChain(layerZeroSepoliaEndpointId, destinationTellerAddress);
+        // sourceTeller.allowMessagesToChain(layerZeroSepoliaEndpointId, destinationTellerAddress, 1000000);
 
         // sourceTeller.setAuthority(rolesAuthority);
         // rolesAuthority.setUserRole(address(sourceTeller), MINTER_ROLE, true);

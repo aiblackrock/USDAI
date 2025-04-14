@@ -12,6 +12,9 @@ contract MinatoAddresses {
     // should be a multisig address!
     address public liquidPayoutAddress = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
 
+    // CCIP token transfers.
+    address public ccipRouter = 0x443a1bce545d56E2c3f20ED32eA588395FFce0f4;
+
     // should be update
     // address public uniswapV3NonFungiblePositionManager = 0x655C406EBFa14EE2006250925e54ec43AD184f8B;
 
