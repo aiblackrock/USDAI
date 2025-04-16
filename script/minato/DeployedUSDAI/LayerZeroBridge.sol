@@ -53,6 +53,7 @@ contract USDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, M
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
+        // bridge setup
         // sourceTeller.addChain(layerZeroSepoliaEndpointId, true, true, destinationTellerAddress, 1000000);
         // sourceTeller.allowMessagesFromChain(layerZeroSepoliaEndpointId, destinationTellerAddress);
         // sourceTeller.allowMessagesToChain(layerZeroSepoliaEndpointId, destinationTellerAddress, 1000000);

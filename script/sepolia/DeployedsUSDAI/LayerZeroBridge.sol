@@ -18,11 +18,11 @@ import {console} from "forge-std/console.sol";
  * @notice This script demonstrates how to deposit USDC and ASTR into the USDAI vault on Minato
  * @dev Run with: forge script script/USDAIIntegrationTest/Deposit.sol --rpc-url $MINATO_RPC_URL
  */
-contract USDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames, MerkleTreeHelper {
+contract sUSDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames, MerkleTreeHelper {
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0xDdA503dDb2A754e27fdbdCE9F0AF41FA979E7898);
+    address public destinationTellerAddress = address(0x636e812694e6b3e1017dD7f19d95bb17Ad655777);
     LayerZeroTeller sourceTeller;
     LayerZeroTeller destinationTeller;
     AccountantWithRateProviders accountant;
@@ -39,11 +39,11 @@ contract USDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames, 
         setSourceChainName("sepolia");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(UsdaiSepoliaVaultName)));
-        sourceTellerAddress = deployer.getAddress(UsdaiSepoliaLayerZeroTellerName);
+        vault = BoringVault(payable(deployer.getAddress(sUsdaiSepoliaVaultName)));
+        sourceTellerAddress = deployer.getAddress(sUsdaiSepoliaLayerZeroTellerName);
         sourceTeller = LayerZeroTeller(sourceTellerAddress);
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiSepoliaVaultRolesAuthorityName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiSepoliaVaultAccountantName));
+        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiSepoliaVaultRolesAuthorityName));
     }
 
     function run() public {
@@ -60,8 +60,8 @@ contract USDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames, 
         // rolesAuthority.setUserRole(address(sourceTeller), BURNER_ROLE, true);
         
         // to minato
-        uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroMinatoEndpointId), NATIVE_ERC20);
-        sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroMinatoEndpointId), NATIVE_ERC20, expectedFee);
+        // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroMinatoEndpointId), NATIVE_ERC20);
+        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroMinatoEndpointId), NATIVE_ERC20, expectedFee);
         
         vm.stopBroadcast();
     }

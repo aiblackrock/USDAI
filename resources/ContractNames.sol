@@ -308,6 +308,6 @@ contract ContractNames {
     string public constant sUsdaiSepoliaVaultDelayedWithdrawer = "sUSDAI Sepolia Vault Delayed Withdrawer V0.1";
     string public constant sUsdaiSepoliaVaultQueueName = "sUSDAI Sepolia Vault Queue V0.1";
     string public constant sUsdaiSepoliaVaultQueueSolverName = "sUSDAI Sepolia Vault Queue Solver V0.1";
-    string public constant sUsdaiSepoliaLayerZeroTellerName = "sUSDAI Sepolia LayerZero Teller V0.1";
+    string public constant sUsdaiSepoliaLayerZeroTellerName = "sUSDAI Sepolia LayerZero Teller V0.2";
     string public constant sUsdaiSepoliaChainlinkCCIPTellerName = "sUSDAI Sepolia Chainlink CCIP Teller V0.0";
 }
