@@ -24,10 +24,12 @@ contract ChainValues {
     string public constant holesky = "holesky";
     string public constant minato = "minato";
     string public constant soneium = "soneium";
-
+    string public constant sepolia = "sepolia";
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
+    uint64 public constant ccipMinatoChainSelector = 686603546605904534;
+    uint64 public constant ccipSepoliaChainSelector = 16015286601757825753;
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -35,6 +37,8 @@ contract ChainValues {
     uint32 public constant layerZeroLineaEndpointId = 30183;
     uint32 public constant layerZeroScrollEndpointId = 30214;
     uint32 public constant layerZeroCornEndpointId = 30331; 
+    uint32 public constant layerZeroMinatoEndpointId = 40334;
+    uint32 public constant layerZeroSepoliaEndpointId = 40161;
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
@@ -91,6 +95,7 @@ contract ChainValues {
         // Add testnet values
         _addHoleskyValues();
         _addMinatoValues();
+        _addSepoliaValues();
     }
 
     function _addMainnetValues() private {
@@ -1174,6 +1179,7 @@ contract ChainValues {
         // Symbiotic
         values[holesky]["wstETHSymbioticVault"] = 0x89D62D1d89d8636367fc94998b3bE095a3d9c2f9.toBytes32();
     }
+
     function _addMinatoValues() private {
         values[minato]["deployerAddress"] = 0x1A5D2Df8F24Cf79B3FddDe293856c1AD7685feB8.toBytes32();
         values[minato]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
@@ -1181,6 +1187,17 @@ contract ChainValues {
         values[minato]["ASTR"] = 0x26e6f7c7047252DdE3dcBF26AA492e6a264Db655.toBytes32();
         values[minato]["USDC"] = 0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391.toBytes32();
         values[minato]["v3Pool"] = 0xEc38a5Cd88E87Fec0D10822DE8a3D6dB144931DA.toBytes32();
+        // CCIP token transfers.
+        values[minato]["ccipRouter"] = 0x443a1bce545d56E2c3f20ED32eA588395FFce0f4.toBytes32();
+    }
+
+    function _addSepoliaValues() private {
+        values[sepolia]["deployerAddress"] = 0x0bD4DF93ccb0B383609636c3C8E7680c2B38301a.toBytes32();
+        values[sepolia]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[sepolia]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[sepolia]["USDC"] = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238.toBytes32();
+        // CCIP token transfers.
+        values[sepolia]["ccipRouter"] = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59.toBytes32();
     }
 
     function _addMantleValues() private {

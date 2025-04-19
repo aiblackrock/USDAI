@@ -264,6 +264,8 @@ contract ContractNames {
     string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.5";
     string public constant UsdaiMinatoVaultQueueName = "USDAI Minato Vault Queue V0.5";
     string public constant UsdaiMinatoVaultQueueSolverName = "USDAI Minato Vault Queue Solver V0.5";
+    string public constant UsdaiMinatoLayerZeroTellerName = "USDAI Minato LayerZero Teller V0.2";
+    string public constant UsdaiMinatoChainlinkCCIPTellerName = "USDAI Minato Chainlink CCIP Teller V0.0";
 
     // sUSDAI in minato
     string public constant sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "sUSDAI Minato Boring OnChain Queues Roles Authority V0.5";
@@ -277,4 +279,35 @@ contract ContractNames {
     string public constant sUsdaiMinatoVaultDelayedWithdrawer = "sUSDAI Minato Vault Delayed Withdrawer V0.5";
     string public constant sUsdaiMinatoVaultQueueName = "sUSDAI Minato Vault Queue V0.5";
     string public constant sUsdaiMinatoVaultQueueSolverName = "sUSDAI Minato Vault Queue Solver V0.5";
+    string public constant sUsdaiMinatoLayerZeroTellerName = "sUSDAI Minato LayerZero Teller V0.5";
+    string public constant sUsdaiMinatoChainlinkCCIPTellerName = "sUSDAI Minato Chainlink CCIP Teller V0.0";
+
+    // USDAI in sepolia
+    string public constant UsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "USDAI Sepolia Boring OnChain Queues Roles Authority V0.3";
+    string public constant UsdaiSepoliaVaultRolesAuthorityName = "USDAI Sepolia Vault RolesAuthority V0.3";
+    string public constant UsdaiSepoliaArcticArchitectureLensName = "USDAI Sepolia Arctic Architecture Lens V0.3";
+    string public constant UsdaiSepoliaVaultName = "USDAI Sepolia Vault V0.3";
+    string public constant UsdaiSepoliaVaultManagerName = "USDAI Sepolia Vault Manager With Merkle Verification V0.3";
+    string public constant UsdaiSepoliaVaultAccountantName = "USDAI Sepolia Vault Accountant With Rate Providers V0.3";
+    string public constant UsdaiSepoliaVaultTellerName = "USDAI Sepolia Vault Teller With Multi Asset Support V0.3";
+    string public constant UsdaiSepoliaVaultDecoderAndSanitizerName = "USDAI Sepolia Vault Decoder and Sanitizer V0.3";
+    string public constant UsdaiSepoliaVaultDelayedWithdrawer = "USDAI Sepolia Vault Delayed Withdrawer V0.3";
+    string public constant UsdaiSepoliaVaultQueueName = "USDAI Sepolia Vault Queue V0.3";
+    string public constant UsdaiSepoliaVaultQueueSolverName = "USDAI Sepolia Vault Queue Solver V0.3";
+    string public constant UsdaiSepoliaLayerZeroTellerName = "USDAI Sepolia LayerZero Teller V1.0";
+    string public constant UsdaiSepoliaChainlinkCCIPTellerName = "USDAI Sepolia Chainlink CCIP Teller V0.0";
+    // sUSDAI in sepolia
+    string public constant sUsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "sUSDAI Sepolia Boring OnChain Queues Roles Authority V0.1";
+    string public constant sUsdaiSepoliaVaultRolesAuthorityName = "sUSDAI Sepolia Vault RolesAuthority V0.1";
+    string public constant sUsdaiSepoliaArcticArchitectureLensName = "sUSDAI Sepolia Arctic Architecture Lens V0.1";
+    string public constant sUsdaiSepoliaVaultName = "sUSDAI Sepolia Vault V0.1";
+    string public constant sUsdaiSepoliaVaultManagerName = "sUSDAI Sepolia Vault Manager With Merkle Verification V0.1";
+    string public constant sUsdaiSepoliaVaultAccountantName = "sUSDAI Sepolia Vault Accountant With Rate Providers V0.1";
+    string public constant sUsdaiSepoliaVaultTellerName = "sUSDAI Sepolia Vault Teller With Multi Asset Support V0.1";
+    string public constant sUsdaiSepoliaVaultDecoderAndSanitizerName = "sUSDAI Sepolia Vault Decoder and Sanitizer V0.1";
+    string public constant sUsdaiSepoliaVaultDelayedWithdrawer = "sUSDAI Sepolia Vault Delayed Withdrawer V0.1";
+    string public constant sUsdaiSepoliaVaultQueueName = "sUSDAI Sepolia Vault Queue V0.1";
+    string public constant sUsdaiSepoliaVaultQueueSolverName = "sUSDAI Sepolia Vault Queue Solver V0.1";
+    string public constant sUsdaiSepoliaLayerZeroTellerName = "sUSDAI Sepolia LayerZero Teller V0.2";
+    string public constant sUsdaiSepoliaChainlinkCCIPTellerName = "sUSDAI Sepolia Chainlink CCIP Teller V0.0";
 }
