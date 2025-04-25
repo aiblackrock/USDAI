@@ -1196,6 +1196,8 @@ contract ChainValues {
         values[sepolia]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["USDC"] = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238.toBytes32();
+
+        values[sepolia]["USDOExpress"] = 0xD65eF7fF5e7B3DBCCD07F6637Dc47101311ecEe6.toBytes32();
         // CCIP token transfers.
         values[sepolia]["ccipRouter"] = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59.toBytes32();
     }
