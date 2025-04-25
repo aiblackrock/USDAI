@@ -2282,6 +2282,59 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         }
     }
 
+    // ========================================= OpenEden =========================================
+    function _addOpenEdenLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address USDOExpress = 0xD65eF7fF5e7B3DBCCD07F6637Dc47101311ecEe6;//getAddress(sourceChain, "USDOExpress");
+        address _usdc = 0x7069C635d6fCd1C3D0cd9b563CDC6373e06052ee;//getAddress(sourceChain, "USDC");
+        
+        // Add USDC approval for OpenEden router
+        if (!tokenToSpenderToApprovalInTree[_usdc][USDOExpress]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to OpenEden router",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = USDOExpress;
+            tokenToSpenderToApprovalInTree[_usdc][USDOExpress] = true;
+        }
+        
+        // Instant mint
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            USDOExpress,
+            false,
+            "instantMint(address,address,uint256)",
+            new address[](2),
+            "OpenEden Mint USDO",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        // Instant redeem
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            USDOExpress,
+            false,
+            "instantRedeem(address,uint256)",
+            new address[](1),
+            "OpenEden Redeem USDO",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
     // ========================================= Uniswap V3 =========================================
 
     function _addUniswapV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {
