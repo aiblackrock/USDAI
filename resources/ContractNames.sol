@@ -297,6 +297,7 @@ contract ContractNames {
     string public constant UsdaiSepoliaLayerZeroTellerName = "USDAI Sepolia LayerZero Teller V1.0";
     string public constant UsdaiSepoliaChainlinkCCIPTellerName = "USDAI Sepolia Chainlink CCIP Teller V0.0";
     string public constant UsdaiSepoliaOpenEdenDecoderAndSanitizerName = "USDAI Sepolia OpenEden Decoder and Sanitizer V0.1";
+    string public constant UsdaiSepoliaMorphoDecoderAndSanitizerName = "USDAI Sepolia Morpho Decoder and Sanitizer V0.1";
     // sUSDAI in sepolia
     string public constant sUsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "sUSDAI Sepolia Boring OnChain Queues Roles Authority V0.1";
     string public constant sUsdaiSepoliaVaultRolesAuthorityName = "sUSDAI Sepolia Vault RolesAuthority V0.1";
