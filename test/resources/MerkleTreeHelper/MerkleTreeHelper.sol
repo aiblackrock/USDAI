@@ -2335,6 +2335,56 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
     }
 
+    // ========================================= Morpho =========================================
+    function _addMorphoLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address morpho = 0x2Ed0a90f247cd7fBe3a6a246b4D9b89a257F7348;
+        address _usdc = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238;//getAddress(sourceChain, "USDC");
+
+        // Add USDC approval
+        if (!tokenToSpenderToApprovalInTree[_usdc][morpho]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to Morpho",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = morpho;
+            tokenToSpenderToApprovalInTree[_usdc][morpho] = true;
+        }
+
+        // Deposit
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            morpho,
+            false,
+            "deposit(uint256,uint256)",
+            new address[](0),
+            "Deposit to Morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        // Withdraw
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            morpho,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            "Withdraw from Morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+    }
+
     // ========================================= Uniswap V3 =========================================
 
     function _addUniswapV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {
