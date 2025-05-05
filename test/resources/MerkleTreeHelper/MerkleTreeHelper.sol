@@ -10,6 +10,7 @@ import {IComet} from "src/interfaces/IComet.sol";
 import {TellerWithMultiAssetSupport} from "src/base/Roles/TellerWithMultiAssetSupport.sol";
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import "forge-std/Base.sol";
+import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 contract MerkleTreeHelper is CommonBase, ChainValues {
     using Address for address;
@@ -6086,7 +6087,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     // ========================================= BoringVault Teller =========================================
 
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
-        ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
+        ERC20Upgradeable boringVault = TellerWithMultiAssetSupport(teller).vault();
 
         for (uint256 i; i < assets.length; ++i) {
             // Approve BoringVault to spend all assets.

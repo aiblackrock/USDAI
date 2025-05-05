@@ -348,7 +348,7 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
 
         _beforeNewRequest(withdrawAsset, amountOfShares, discount, secondsToDeadline);
 
-        boringVault.safeTransferFrom(msg.sender, address(this), amountOfShares);
+        ERC20(address(boringVault)).safeTransferFrom(msg.sender, address(this), amountOfShares);
 
         (requestId,) = _queueOnChainWithdraw(
             msg.sender, assetOut, amountOfShares, discount, withdrawAsset.secondsToMaturity, secondsToDeadline
@@ -381,14 +381,14 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
 
         _beforeNewRequest(withdrawAsset, amountOfShares, discount, secondsToDeadline);
 
-        try boringVault.permit(msg.sender, address(this), amountOfShares, permitDeadline, v, r, s) {}
+        try ERC20(address(boringVault)).permit(msg.sender, address(this), amountOfShares, permitDeadline, v, r, s) {}
         catch {
             if (boringVault.allowance(msg.sender, address(this)) < amountOfShares) {
                 revert BoringOnChainQueue__PermitFailedAndAllowanceTooLow();
             }
         }
 
-        boringVault.safeTransferFrom(msg.sender, address(this), amountOfShares);
+        ERC20(address(boringVault)).safeTransferFrom(msg.sender, address(this), amountOfShares);
 
         (requestId,) = _queueOnChainWithdraw(
             msg.sender, assetOut, amountOfShares, discount, withdrawAsset.secondsToMaturity, secondsToDeadline
@@ -458,7 +458,7 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
         }
 
         // Transfer shares to solver.
-        boringVault.safeTransfer(solver, totalShares);
+        ERC20(address(boringVault)).safeTransfer(solver, totalShares);
 
         // Run callback function if data is provided.
         if (solveData.length > 0) {
@@ -554,7 +554,7 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
      */
     function _cancelOnChainWithdraw(OnChainWithdraw memory request) internal virtual returns (bytes32 requestId) {
         requestId = _dequeueOnChainWithdraw(request);
-        boringVault.safeTransfer(request.user, request.amountOfShares);
+        ERC20(address(boringVault)).safeTransfer(request.user, request.amountOfShares);
         emit OnChainWithdrawCancelled(requestId, request.user, block.timestamp);
     }
 

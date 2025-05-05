@@ -21,6 +21,7 @@ import {DelayedWithdraw} from "src/base/Roles/DelayedWithdraw.sol";
 import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 /**
  *  source .env && forge script script/DeployBoringVaultArctic.s.sol:DeployBoringVaultArcticScript --with-gas-price 30000000000 --slow --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify
@@ -127,6 +128,21 @@ contract DeployArcticArchitecture is Script, ContractNames {
     string depositConfigurationOutput;
     string droneOutput;
 
+    struct DeployParams {
+        string deploymentFileName;
+        address owner;
+        string boringVaultName;
+        string boringVaultSymbol;
+        uint8 boringVaultDecimals;
+        bytes decoderAndSanitizerCreationCode;
+        bytes decoderAndSanitizerConstructorArgs;
+        address delayedWithdrawFeeAddress;
+        bool allowPublicDeposits;
+        bool allowPublicWithdraws;
+        uint64 shareLockPeriod;
+        address developmentAddress;
+    }
+
     function _getAddressIfDeployed(string memory name) internal view returns (address) {
         address deployedAt = deployer.getAddress(name);
         uint256 size;
@@ -136,20 +152,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
         return size > 0 ? deployedAt : address(0);
     }
 
-    function _deploy(
-        string memory deploymentFileName,
-        address owner,
-        string memory boringVaultName,
-        string memory boringVaultSymbol,
-        uint8 boringVaultDecimals,
-        bytes memory decoderAndSanitizerCreationCode,
-        bytes memory decoderAndSanitizerConstructorArgs,
-        address delayedWithdrawFeeAddress,
-        bool allowPublicDeposits,
-        bool allowPublicWithdraws,
-        uint64 shareLockPeriod,
-        address developmentAddress
-    ) internal {
+    function _deploy(DeployParams memory params) internal {
         bytes memory creationCode;
         bytes memory constructorArgs;
         if (configureDeployment.deployContracts) {
@@ -157,7 +160,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             deployedAddress = _getAddressIfDeployed(names.rolesAuthority);
             if (deployedAddress == address(0)) {
                 creationCode = type(RolesAuthority).creationCode;
-                constructorArgs = abi.encode(owner, Authority(address(0)));
+                constructorArgs = abi.encode(params.owner, Authority(address(0)));
                 rolesAuthority =
                     RolesAuthority(deployer.deployContract(names.rolesAuthority, creationCode, constructorArgs, 0));
             } else {
@@ -174,10 +177,37 @@ contract DeployArcticArchitecture is Script, ContractNames {
 
             deployedAddress = _getAddressIfDeployed(names.boringVault);
             if (deployedAddress == address(0)) {
-                creationCode = boringCreationCode.length == 0 ? type(BoringVault).creationCode : boringCreationCode;
-                constructorArgs = abi.encode(owner, boringVaultName, boringVaultSymbol, boringVaultDecimals);
-                boringVault =
-                    BoringVault(payable(deployer.deployContract(names.boringVault, creationCode, constructorArgs, 0)));
+                // Deploy the implementation
+                address implementation = deployer.deployContract(
+                    string.concat(names.boringVault, "-Implementation"),
+                    type(BoringVault).creationCode,
+                    hex"",
+                    0
+                );
+
+                // Prepare initializer data for UUPS proxy
+                bytes memory initializer = abi.encodeWithSelector(
+                    BoringVault.initialize.selector,
+                    params.owner,
+                    rolesAuthority,
+                    params.boringVaultName,
+                    params.boringVaultSymbol,
+                    params.boringVaultDecimals
+                );
+
+                // Deploy the proxy
+                bytes memory proxyCreationCode = abi.encodePacked(
+                    type(ERC1967Proxy).creationCode,
+                    abi.encode(implementation, initializer)
+                );
+                address proxy = deployer.deployContract(
+                    names.boringVault,
+                    proxyCreationCode,
+                    hex"",
+                    0
+                );
+
+                boringVault = BoringVault(payable(proxy));
             } else {
                 boringVault = BoringVault(payable(deployedAddress));
             }
@@ -185,7 +215,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             deployedAddress = _getAddressIfDeployed(names.manager);
             if (deployedAddress == address(0)) {
                 creationCode = type(ManagerWithMerkleVerification).creationCode;
-                constructorArgs = abi.encode(owner, address(boringVault), configureDeployment.balancerVault);
+                constructorArgs = abi.encode(params.owner, address(boringVault), configureDeployment.balancerVault);
                 manager = ManagerWithMerkleVerification(
                     deployer.deployContract(names.manager, creationCode, constructorArgs, 0)
                 );
@@ -197,7 +227,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             if (deployedAddress == address(0)) {
                 creationCode = type(AccountantWithFixedRate).creationCode;
                 constructorArgs = abi.encode(
-                    owner,
+                    params.owner,
                     address(boringVault),
                     accountantParameters.payoutAddress,
                     accountantParameters.startingExchangeRate,
@@ -218,7 +248,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             deployedAddress = _getAddressIfDeployed(names.teller);
             if (deployedAddress == address(0)) {
                 creationCode = type(TellerWithMultiAssetSupport).creationCode;
-                constructorArgs = abi.encode(owner, address(boringVault), address(accountant), configureDeployment.WETH);
+                constructorArgs = abi.encode(params.owner, address(boringVault), address(accountant), configureDeployment.WETH);
                 teller = TellerWithMultiAssetSupport(
                     payable(deployer.deployContract(names.teller, creationCode, constructorArgs, 0))
                 );
@@ -230,8 +260,8 @@ contract DeployArcticArchitecture is Script, ContractNames {
             if (deployedAddress == address(0)) {
                 rawDataDecoderAndSanitizer = deployer.deployContract(
                     names.rawDataDecoderAndSanitizer,
-                    decoderAndSanitizerCreationCode,
-                    decoderAndSanitizerConstructorArgs,
+                    params.decoderAndSanitizerCreationCode,
+                    params.decoderAndSanitizerConstructorArgs,
                     0
                 );
             } else {
@@ -242,7 +272,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             if (deployedAddress == address(0)) {
                 creationCode = type(DelayedWithdraw).creationCode;
                 constructorArgs =
-                    abi.encode(owner, address(boringVault), address(accountant), delayedWithdrawFeeAddress);
+                    abi.encode(params.owner, address(boringVault), address(accountant), params.delayedWithdrawFeeAddress);
                 delayedWithdrawer =
                     DelayedWithdraw(deployer.deployContract(names.delayedWithdrawer, creationCode, constructorArgs, 0));
             } else {
@@ -736,7 +766,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             }
 
             // Publicly callable functions
-            if (allowPublicDeposits) {
+            if (params.allowPublicDeposits) {
                 if (!rolesAuthority.isCapabilityPublic(address(teller), TellerWithMultiAssetSupport.deposit.selector)) {
                     rolesAuthority.setPublicCapability(
                         address(teller), TellerWithMultiAssetSupport.deposit.selector, true
@@ -752,7 +782,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
                     );
                 }
             }
-            if (allowPublicWithdraws) {
+            if (params.allowPublicWithdraws) {
                 if (
                     !rolesAuthority.isCapabilityPublic(
                         address(delayedWithdrawer), DelayedWithdraw.setAllowThirdPartyToComplete.selector
@@ -850,7 +880,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
 
         if (configureDeployment.finishSetup) {
             // Setup share lock period.
-            if (teller.shareLockPeriod() != shareLockPeriod) teller.setShareLockPeriod(shareLockPeriod);
+            if (teller.shareLockPeriod() != params.shareLockPeriod) teller.setShareLockPeriod(params.shareLockPeriod);
             if (address(boringVault.hook()) != address(teller)) boringVault.setBeforeTransferHook(address(teller));
 
             // Set all RolesAuthorities.
@@ -884,18 +914,18 @@ contract DeployArcticArchitecture is Script, ContractNames {
 
         if (configureDeployment.setupTestUser) {
             // Give development address straetgist and owner roles, and transfer ownership if needed.
-            if (!rolesAuthority.doesUserHaveRole(developmentAddress, STRATEGIST_ROLE)) {
-                rolesAuthority.setUserRole(developmentAddress, STRATEGIST_ROLE, true);
+            if (!rolesAuthority.doesUserHaveRole(params.developmentAddress, STRATEGIST_ROLE)) {
+                rolesAuthority.setUserRole(params.developmentAddress, STRATEGIST_ROLE, true);
             }
-            if (!rolesAuthority.doesUserHaveRole(developmentAddress, OWNER_ROLE)) {
-                rolesAuthority.setUserRole(developmentAddress, OWNER_ROLE, true);
+            if (!rolesAuthority.doesUserHaveRole(params.developmentAddress, OWNER_ROLE)) {
+                rolesAuthority.setUserRole(params.developmentAddress, OWNER_ROLE, true);
             }
-            if (owner != developmentAddress) rolesAuthority.transferOwnership(developmentAddress);
+            if (params.owner != params.developmentAddress) rolesAuthority.transferOwnership(params.developmentAddress);
         }
 
         if (configureDeployment.saveDeploymentDetails) {
             // Save deployment details.
-            string memory filePath = string.concat("./deployments/", deploymentFileName);
+            string memory filePath = string.concat("./deployments/", params.deploymentFileName);
 
             if (vm.exists(filePath)) {
                 // Need to delete it
@@ -982,9 +1012,9 @@ contract DeployArcticArchitecture is Script, ContractNames {
 
             {
                 string memory depositConfiguration = "deposit configuration key";
-                vm.serializeBool(depositConfiguration, "AllowPublicDeposits", allowPublicDeposits);
-                vm.serializeBool(depositConfiguration, "AllowPublicWithdraws", allowPublicWithdraws);
-                depositConfigurationOutput = vm.serializeUint(depositConfiguration, "ShareLockPeriod", shareLockPeriod);
+                vm.serializeBool(depositConfiguration, "AllowPublicDeposits", params.allowPublicDeposits);
+                vm.serializeBool(depositConfiguration, "AllowPublicWithdraws", params.allowPublicWithdraws);
+                depositConfigurationOutput = vm.serializeUint(depositConfiguration, "ShareLockPeriod", params.shareLockPeriod);
             }
 
             vm.serializeString(finalJson, "depositConfiguration", depositConfigurationOutput);
