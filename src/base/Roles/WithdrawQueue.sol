@@ -373,7 +373,7 @@ contract WithdrawQueue is Auth, ReentrancyGuard, IPausable {
         if (!withdrawAsset.allowWithdraws) revert WithdrawQueue__WithdrawsNotAllowed();
         if (maxLoss > MAX_LOSS) revert WithdrawQueue__MaxLossTooLarge();
 
-        boringVault.safeTransferFrom(msg.sender, address(this), shares);
+        ERC20(address(boringVault)).safeTransferFrom(msg.sender, address(this), shares);
 
         withdrawAsset.outstandingShares += shares;
 
@@ -469,7 +469,7 @@ contract WithdrawQueue is Auth, ReentrancyGuard, IPausable {
         if (shares == 0) revert WithdrawQueue__NoSharesToWithdraw();
         withdrawAsset.outstandingShares -= shares;
         req.shares = 0;
-        boringVault.safeTransfer(account, shares);
+        ERC20(address(boringVault)).safeTransfer(account, shares);
 
         emit WithdrawCancelled(account, asset, shares);
     }
