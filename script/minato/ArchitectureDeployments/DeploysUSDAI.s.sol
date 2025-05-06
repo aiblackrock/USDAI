@@ -87,19 +87,19 @@ contract DeploysUSDAIScript is DeployArcticArchitectureWithoutFixedRate, MinatoA
 
         vm.startBroadcast(privateKey);
 
-        _deploy(
-            "sUSDAIMinatoDeployment.json",
-            owner,
-            boringVaultName,
-            boringVaultSymbol,
-            boringVaultDecimals,
-            creationCode,
-            constructorArgs,
-            delayedWithdrawFeeAddress,
-            allowPublicDeposits,
-            allowPublicWithdraws,
-            shareLockPeriod,
-            dev1Address
+        _deploy(DeployParams({
+            deploymentFileName: "sUSDAIMinatoDeployment.json",
+            owner: owner,
+            boringVaultName: boringVaultName,
+            boringVaultSymbol: boringVaultSymbol,
+            boringVaultDecimals: boringVaultDecimals,
+            creationCode: creationCode,
+            constructorArgs: constructorArgs,
+            delayedWithdrawFeeAddress: delayedWithdrawFeeAddress,
+            allowPublicDeposits: allowPublicDeposits,
+            allowPublicWithdraws: allowPublicWithdraws,
+            shareLockPeriod: shareLockPeriod,
+            developmentAddress: dev1Address
         );
 
         vm.stopBroadcast();

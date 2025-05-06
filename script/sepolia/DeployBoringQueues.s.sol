@@ -153,8 +153,11 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         /// @notice By default the self solve functions are not made public.
 
         // CAN_SOLVE_ROLE
+        // rolesAuthority.setRoleCapability(
+        //     CAN_SOLVE_ROLE, solver, BoringOnChainQueue.solveOnChainWithdraws.selector, true
+        // );
         rolesAuthority.setRoleCapability(
-            CAN_SOLVE_ROLE, solver, BoringOnChainQueue.solveOnChainWithdraws.selector, true
+            CAN_SOLVE_ROLE, address(queue), BoringOnChainQueue.solveOnChainWithdraws.selector, true
         );
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemSolve.selector, true);
         rolesAuthority.setRoleCapability(CAN_SOLVE_ROLE, solver, BoringSolver.boringRedeemMintSolve.selector, true);

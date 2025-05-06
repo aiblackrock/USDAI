@@ -88,18 +88,20 @@ contract DeployUSDAIScript is DeployArcticArchitecture, SepoliaAddresses {
         vm.startBroadcast(privateKey);
         console.log("deploying boring vault");
         _deploy(
-            "USDAISepoliaDeployment.json",
-            owner,
-            boringVaultName,
-            boringVaultSymbol,
-            boringVaultDecimals,
-            creationCode,
-            constructorArgs,
-            delayedWithdrawFeeAddress,
-            allowPublicDeposits,
-            allowPublicWithdraws,
-            shareLockPeriod,
-            dev1Address
+            DeployParams({
+                deploymentFileName: "USDAISepoliaDeployment.json",
+                owner: owner,
+                boringVaultName: boringVaultName,
+                boringVaultSymbol: boringVaultSymbol,
+                boringVaultDecimals: boringVaultDecimals,
+                decoderAndSanitizerCreationCode: creationCode,
+                decoderAndSanitizerConstructorArgs: constructorArgs,
+                delayedWithdrawFeeAddress: delayedWithdrawFeeAddress,
+                allowPublicDeposits: allowPublicDeposits,
+                allowPublicWithdraws: allowPublicWithdraws,
+                shareLockPeriod: shareLockPeriod,
+                developmentAddress: dev1Address
+            })
         );
 
         vm.stopBroadcast();
