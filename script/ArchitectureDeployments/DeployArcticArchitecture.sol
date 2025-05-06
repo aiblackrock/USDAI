@@ -335,6 +335,12 @@ contract DeployArcticArchitecture is Script, ContractNames {
                     true
                 );
             }
+            rolesAuthority.setRoleCapability(
+                MANAGER_ROLE,
+                address(boringVault),
+                bytes4(abi.encodeWithSignature("upgradeToAndCall(address,bytes)")),
+                true
+            );
             // MINTER_ROLE
             if (!rolesAuthority.doesRoleHaveCapability(MINTER_ROLE, address(boringVault), BoringVault.enter.selector)) {
                 rolesAuthority.setRoleCapability(MINTER_ROLE, address(boringVault), BoringVault.enter.selector, true);
