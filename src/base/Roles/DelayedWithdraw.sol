@@ -363,7 +363,7 @@ contract DelayedWithdraw is Auth, ReentrancyGuard, IPausable {
         if (!withdrawAsset.allowWithdraws) revert DelayedWithdraw__WithdrawsNotAllowed();
         if (maxLoss > MAX_LOSS) revert DelayedWithdraw__MaxLossTooLarge();
 
-        boringVault.safeTransferFrom(msg.sender, address(this), shares);
+        ERC20(address(boringVault)).safeTransferFrom(msg.sender, address(this), shares);
 
         withdrawAsset.outstandingShares += shares;
 
@@ -444,7 +444,7 @@ contract DelayedWithdraw is Auth, ReentrancyGuard, IPausable {
         if (shares == 0) revert DelayedWithdraw__NoSharesToWithdraw();
         withdrawAsset.outstandingShares -= shares;
         req.shares = 0;
-        boringVault.safeTransfer(account, shares);
+        ERC20(address(boringVault)).safeTransfer(account, shares);
 
         emit WithdrawCancelled(account, asset, shares);
     }
@@ -489,7 +489,7 @@ contract DelayedWithdraw is Auth, ReentrancyGuard, IPausable {
             shares -= fee;
 
             // Transfer fee to feeAddress.
-            boringVault.safeTransfer(feeAddress, fee);
+            ERC20(address(boringVault)).safeTransfer(feeAddress, fee);
         }
 
         // Calculate assets out.

@@ -10,6 +10,7 @@ import {IComet} from "src/interfaces/IComet.sol";
 import {TellerWithMultiAssetSupport} from "src/base/Roles/TellerWithMultiAssetSupport.sol";
 import {BaseDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/BaseDecoderAndSanitizer.sol";
 import "forge-std/Base.sol";
+import {ERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 contract MerkleTreeHelper is CommonBase, ChainValues {
     using Address for address;
@@ -2280,6 +2281,109 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             );
             leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
         }
+    }
+
+    // ========================================= OpenEden =========================================
+    function _addOpenEdenLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address USDOExpress = 0xD65eF7fF5e7B3DBCCD07F6637Dc47101311ecEe6;//getAddress(sourceChain, "USDOExpress");
+        address _usdc = 0x7069C635d6fCd1C3D0cd9b563CDC6373e06052ee;//getAddress(sourceChain, "USDC");
+        
+        // Add USDC approval for OpenEden router
+        if (!tokenToSpenderToApprovalInTree[_usdc][USDOExpress]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to OpenEden router",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = USDOExpress;
+            tokenToSpenderToApprovalInTree[_usdc][USDOExpress] = true;
+        }
+        
+        // Instant mint
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            USDOExpress,
+            false,
+            "instantMint(address,address,uint256)",
+            new address[](2),
+            "OpenEden Mint USDO",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
+        leafs[leafIndex].argumentAddresses[1] = getAddress(sourceChain, "boringVault");
+
+        // Instant redeem
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            USDOExpress,
+            false,
+            "instantRedeem(address,uint256)",
+            new address[](1),
+            "OpenEden Redeem USDO",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault");
+    }
+
+    // ========================================= Morpho =========================================
+    function _addMorphoLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address morpho = 0x2Ed0a90f247cd7fBe3a6a246b4D9b89a257F7348;
+        address _usdc = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238;//getAddress(sourceChain, "USDC");
+
+        // Add USDC approval
+        if (!tokenToSpenderToApprovalInTree[_usdc][morpho]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to Morpho",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = morpho;
+            tokenToSpenderToApprovalInTree[_usdc][morpho] = true;
+        }
+
+        // Deposit
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            morpho,
+            false,
+            "deposit(uint256,uint256)",
+            new address[](0),
+            "Deposit to Morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+
+        // Withdraw
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            morpho,
+            false,
+            "withdraw(uint256)",
+            new address[](0),
+            "Withdraw from Morpho",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
     }
 
     // ========================================= Uniswap V3 =========================================
@@ -5983,7 +6087,7 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
     // ========================================= BoringVault Teller =========================================
 
     function _addTellerLeafs(ManageLeaf[] memory leafs, address teller, ERC20[] memory assets) internal {
-        ERC20 boringVault = TellerWithMultiAssetSupport(teller).vault();
+        ERC20Upgradeable boringVault = TellerWithMultiAssetSupport(teller).vault();
 
         for (uint256 i; i < assets.length; ++i) {
             // Approve BoringVault to spend all assets.
