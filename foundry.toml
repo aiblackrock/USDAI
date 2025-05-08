@@ -4,10 +4,10 @@
 solc_version = '0.8.21'
 auto_detect_solc = false
 evm_version = 'shanghai'
-optimizer = true
 optimizer_runs = 200
 fs_permissions = [{ access = "read-write", path = "./" }]
 deny_warnings = true
+via_ir = true
 
 remappings = [
     "@solmate/=lib/solmate/src/",
@@ -57,3 +57,11 @@ FOUNDRY_FMT_NUMBER_UNDERSCORE = "thousands"
 FOUNDRY_FMT_OVERRIDE_SPACING = true
 FOUNDRY_FMT_WRAP_COMMENTS = false
 FOUNDRY_FMT_IGNORE = []
+
+[profile.default.optimizer_details]
+constantOptimizer = true
+yul = true
+
+[profile.default.optimizer_details.yulDetails]
+stackAllocation = true
+optimizerSteps = 'dhfoDgvulfnTUtnIf'

@@ -2386,6 +2386,50 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         );
     }
 
+    // ========================================= Across =========================================
+    function _addAcrossLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address across = 0x5ef6C01E11889d86803e0B23e3cB3F9E9d97B662;
+        address _usdc = getAddress(sourceChain, "USDC");
+        address baseSepoliaUSDC = 0x036CbD53842c5426634e7929541eC2318f3dCF7e;
+        address devOwner1 = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
+        
+        // Add USDC approval
+        if (!tokenToSpenderToApprovalInTree[_usdc][across]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to Across",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = across;
+            tokenToSpenderToApprovalInTree[_usdc][across] = true;
+        }
+
+        // depositV3
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            across,
+            false,
+            "depositV3(address,address,address,address,uint256,uint256,uint256,address,uint32,uint32,uint32,bytes)",
+            new address[](5),
+            "Bridge via Across",
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); // depositor
+        leafs[leafIndex].argumentAddresses[1] = devOwner1; // recipient
+        leafs[leafIndex].argumentAddresses[2] = _usdc; // inputToken
+        leafs[leafIndex].argumentAddresses[3] = baseSepoliaUSDC; // outputToken
+        leafs[leafIndex].argumentAddresses[4] = address(0); // exclusiveRelayer
+    }
+
     // ========================================= Uniswap V3 =========================================
 
     function _addUniswapV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {
