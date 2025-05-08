@@ -59,6 +59,9 @@ contract sUSDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, 
         // sourceTeller.setAuthority(rolesAuthority);
         // rolesAuthority.setUserRole(address(sourceTeller), MINTER_ROLE, true);
         // rolesAuthority.setUserRole(address(sourceTeller), BURNER_ROLE, true);
+        // rolesAuthority.setPublicCapability(
+        //     address(sourceTeller), sourceTeller.bridge.selector, true
+        // );
 
         uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20);
         // to sepolia

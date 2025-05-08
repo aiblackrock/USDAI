@@ -57,6 +57,10 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
         sourceTeller.allowMessagesFromChain(ccipMinatoChainSelector, destinationTellerAddress);
         sourceTeller.allowMessagesToChain(ccipMinatoChainSelector, destinationTellerAddress, 1000000);
 
+        // rolesAuthority.setPublicCapability(
+        //     address(sourceTeller), sourceTeller.bridge.selector, true
+        // );
+
         // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), NATIVE_ERC20);
         // // to minato
         // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), NATIVE_ERC20, expectedFee);
