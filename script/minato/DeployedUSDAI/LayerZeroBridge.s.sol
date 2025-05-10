@@ -64,11 +64,33 @@ contract USDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, M
         // rolesAuthority.setPublicCapability(
         //     address(sourceTeller), sourceTeller.bridge.selector, true
         // );
+        rolesAuthority.setPublicCapability(
+            address(sourceTeller), sourceTeller.depositAndBridge.selector, true
+        );
 
         uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20);
         // to sepolia
-        sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20, expectedFee);
+        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20, expectedFee);
         
+        uint8 OWNER_ROLE = 1;
+        rolesAuthority.setRoleCapability(
+            OWNER_ROLE, address(sourceTeller), sourceTeller.updateAssetData.selector, true
+        );
+
+        sourceTeller.updateAssetData(USDC, true, true, 0);
+
+        USDC.approve(address(vault), sharesToBridge);
+
+        sourceTeller.depositAndBridge{value: fee}(
+            USDC,                    
+            sharesToBridge,                   // Amount to deposit
+            0,                              // Minimum shares to receive (0 for no minimum)
+            vm.addr(privateKey),            // Address to receive shares on destination chain
+            abi.encode(layerZeroSepoliaEndpointId), // LayerZero destination chain ID
+            NATIVE_ERC20,                   // Pay fee in native token
+            fee                             // Maximum fee to pay
+        );
+
         vm.stopBroadcast();
     }
 }
