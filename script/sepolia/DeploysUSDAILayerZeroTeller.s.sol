@@ -35,9 +35,9 @@ contract DeployLayerZeroTellerScript is Script, ContractNames, SepoliaAddresses,
         vm.createSelectFork("sepolia");
         setSourceChainName(sepolia);
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        boringVault = deployer.getAddress(sUsdaiSepoliaVaultName);
-        accountant = deployer.getAddress(sUsdaiSepoliaVaultAccountantName);
-        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiSepoliaVaultRolesAuthorityName));
+        boringVault = deployer.getAddress(sUsdaiVaultName);
+        accountant = deployer.getAddress(sUsdaiVaultAccountantName);
+        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiVaultRolesAuthorityName));
     }
 
     function run() external {
@@ -48,7 +48,7 @@ contract DeployLayerZeroTellerScript is Script, ContractNames, SepoliaAddresses,
         creationCode = type(LayerZeroTeller).creationCode;
         constructorArgs = abi.encode(dev1Address, boringVault, accountant, weth, lzEndPoint, dev1Address, address(0));
         layerZeroTeller = LayerZeroTeller(
-            deployer.deployContract(sUsdaiSepoliaLayerZeroTellerName, creationCode, constructorArgs, 0)
+            deployer.deployContract(sUsdaiLayerZeroTellerName, creationCode, constructorArgs, 0)
         );
         layerZeroTeller.setAuthority(rolesAuthority);
         rolesAuthority.setUserRole(address(layerZeroTeller), MINTER_ROLE, true);

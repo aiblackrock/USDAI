@@ -34,10 +34,10 @@ contract sUSDAIDepositScript is Script, MinatoAddresses, ContractNames, MerkleTr
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
         // Initialize contract instances
-        vault = BoringVault(payable(deployer.getAddress(sUsdaiMinatoVaultName)));
-        teller = TellerWithMultiAssetSupport(deployer.getAddress(sUsdaiMinatoVaultTellerName));
-        lens = ArcticArchitectureLens(deployer.getAddress(sUsdaiMinatoArcticArchitectureLensName));
-        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiMinatoVaultAccountantName));
+        vault = BoringVault(payable(deployer.getAddress(sUsdaiVaultName)));
+        teller = TellerWithMultiAssetSupport(deployer.getAddress(sUsdaiVaultTellerName));
+        lens = ArcticArchitectureLens(deployer.getAddress(sUsdaiArcticArchitectureLensName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiVaultAccountantName));
     }
 
     function run() public {

@@ -49,14 +49,14 @@ contract DeployUSDAIScript is DeployArcticArchitecture, SepoliaAddresses {
         deployer = Deployer(configureDeployment.deployerAddress);
 
         // Define names to determine where contracts are deployed.
-        names.rolesAuthority = UsdaiSepoliaVaultRolesAuthorityName;
-        names.lens = UsdaiSepoliaArcticArchitectureLensName;
-        names.boringVault = UsdaiSepoliaVaultName;
-        names.manager = UsdaiSepoliaVaultManagerName;
-        names.accountant = UsdaiSepoliaVaultAccountantName;
-        names.teller = UsdaiSepoliaVaultTellerName;
-        names.rawDataDecoderAndSanitizer = UsdaiSepoliaVaultDecoderAndSanitizerName;
-        names.delayedWithdrawer = UsdaiSepoliaVaultDelayedWithdrawer;
+        names.rolesAuthority = UsdaiVaultRolesAuthorityName;
+        names.lens = UsdaiArcticArchitectureLensName;
+        names.boringVault = UsdaiVaultName;
+        names.manager = UsdaiVaultManagerName;
+        names.accountant = UsdaiVaultAccountantName;
+        names.teller = UsdaiVaultTellerName;
+        names.rawDataDecoderAndSanitizer = UsdaiVaultDecoderAndSanitizerName;
+        names.delayedWithdrawer = UsdaiVaultDelayedWithdrawer;
 
         // Define Accountant Parameters.
         accountantParameters.payoutAddress = liquidPayoutAddress;
@@ -89,7 +89,7 @@ contract DeployUSDAIScript is DeployArcticArchitecture, SepoliaAddresses {
         console.log("deploying boring vault");
         _deploy(
             DeployParams({
-                deploymentFileName: "USDAISepoliaDeployment.json",
+                deploymentFileName: "UsdaiDeployment.json",
                 owner: owner,
                 boringVaultName: boringVaultName,
                 boringVaultSymbol: boringVaultSymbol,

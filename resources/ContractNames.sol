@@ -252,65 +252,36 @@ contract ContractNames {
     string public constant WEETHRateProviderName = "weETH Generic Rate Provider V0.0";
     string public constant sdeUSDRateProviderName = "sdeUSD Generic Rate Provider V0.0";
 
-    // USDAI in minato
-    string public constant UsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "USDAI Minato Boring OnChain Queues Roles Authority V0.5";
-    string public constant UsdaiMinatoVaultRolesAuthorityName = "USDAI Minato Vault RolesAuthority V0.5";
-    string public constant UsdaiMinatoArcticArchitectureLensName = "USDAI Minato Arctic Architecture Lens V0.5";
-    string public constant UsdaiMinatoVaultName = "USDAI Minato Vault V0.5";
-    string public constant UsdaiMinatoVaultManagerName = "USDAI Minato Vault Manager With Merkle Verification V0.5";
-    string public constant UsdaiMinatoVaultAccountantName = "USDAI Minato Vault Accountant With Rate Providers V0.5";
-    string public constant UsdaiMinatoVaultTellerName = "USDAI Minato Vault Teller With Multi Asset Support V0.5";
-    string public constant UsdaiMinatoVaultDecoderAndSanitizerName = "USDAI Minato Vault Decoder and Sanitizer V0.5";
-    string public constant UsdaiMinatoVaultDelayedWithdrawer = "USDAI Minato Vault Delayed Withdrawer V0.5";
-    string public constant UsdaiMinatoVaultQueueName = "USDAI Minato Vault Queue V0.5";
-    string public constant UsdaiMinatoVaultQueueSolverName = "USDAI Minato Vault Queue Solver V0.5";
-    string public constant UsdaiMinatoLayerZeroTellerName = "USDAI Minato LayerZero Teller V0.2";
-    string public constant UsdaiMinatoChainlinkCCIPTellerName = "USDAI Minato Chainlink CCIP Teller V0.0";
+    // USDAI 
+    string public constant UsdaiBoringOnChainQueuesRolesAuthorityName = "USDAI Boring OnChain Queues Roles Authority V0.0";
+    string public constant UsdaiVaultRolesAuthorityName = "USDAI Vault RolesAuthority V0.0";
+    string public constant UsdaiArcticArchitectureLensName = "USDAI Arctic Architecture Lens V0.0";
+    string public constant UsdaiVaultName = "USDAI Vault V0.0";
+    string public constant UsdaiVaultManagerName = "USDAI Vault Manager With Merkle Verification V0.0";
+    string public constant UsdaiVaultAccountantName = "USDAI Vault Accountant With Rate Providers V0.0";
+    string public constant UsdaiVaultTellerName = "USDAI Vault Teller With Multi Asset Support V0.0";
+    string public constant UsdaiVaultDecoderAndSanitizerName = "USDAI Vault Decoder and Sanitizer V0.0";
+    string public constant UsdaiVaultDelayedWithdrawer = "USDAI Vault Delayed Withdrawer V0.0";
+    string public constant UsdaiVaultQueueName = "USDAI Vault Queue V0.0";
+    string public constant UsdaiVaultQueueSolverName = "USDAI Vault Queue Solver V0.0";
+    string public constant UsdaiLayerZeroTellerName = "USDAI LayerZero Teller V0.0";
+    string public constant UsdaiChainlinkCCIPTellerName = "USDAI Chainlink CCIP Teller V0.0";
+    string public constant UsdaiAcrossDecoderAndSanitizerName = "USDAI Across Decoder and Sanitizer V0.0";
+    string public constant UsdaiMorphoDecoderAndSanitizerName = "USDAI Morpho Decoder and Sanitizer V0.0";
+    string public constant UsdaiOpenEdenDecoderAndSanitizerName = "USDAI OpenEden Decoder and Sanitizer V0.0";
 
-    // sUSDAI in minato
-    string public constant sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName = "sUSDAI Minato Boring OnChain Queues Roles Authority V0.5";
-    string public constant sUsdaiMinatoVaultRolesAuthorityName = "sUSDAI Minato Vault RolesAuthority V0.5";
-    string public constant sUsdaiMinatoArcticArchitectureLensName = "sUSDAI Minato Arctic Architecture Lens V0.5";
-    string public constant sUsdaiMinatoVaultName = "sUSDAI Minato Vault V0.5";
-    string public constant sUsdaiMinatoVaultManagerName = "sUSDAI Minato Vault Manager With Merkle Verification V0.5";
-    string public constant sUsdaiMinatoVaultAccountantName = "sUSDAI Minato Vault Accountant With Rate Providers V0.5";
-    string public constant sUsdaiMinatoVaultTellerName = "sUSDAI Minato Vault Teller With Multi Asset Support V0.5";
-    string public constant sUsdaiMinatoVaultDecoderAndSanitizerName = "sUSDAI Minato Vault Decoder and Sanitizer V0.5";
-    string public constant sUsdaiMinatoVaultDelayedWithdrawer = "sUSDAI Minato Vault Delayed Withdrawer V0.5";
-    string public constant sUsdaiMinatoVaultQueueName = "sUSDAI Minato Vault Queue V0.5";
-    string public constant sUsdaiMinatoVaultQueueSolverName = "sUSDAI Minato Vault Queue Solver V0.5";
-    string public constant sUsdaiMinatoLayerZeroTellerName = "sUSDAI Minato LayerZero Teller V0.5";
-    string public constant sUsdaiMinatoChainlinkCCIPTellerName = "sUSDAI Minato Chainlink CCIP Teller V0.0";
-
-    // USDAI in sepolia
-    string public constant UsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "USDAI Sepolia Boring OnChain Queues Roles Authority V0.3";
-    string public constant UsdaiSepoliaVaultRolesAuthorityName = "USDAI Sepolia Vault RolesAuthority V0.3";
-    string public constant UsdaiSepoliaArcticArchitectureLensName = "USDAI Sepolia Arctic Architecture Lens V0.3";
-    string public constant UsdaiSepoliaVaultName = "USDAI Sepolia Vault V0.3";
-    string public constant UsdaiSepoliaVaultManagerName = "USDAI Sepolia Vault Manager With Merkle Verification V0.3";
-    string public constant UsdaiSepoliaVaultAccountantName = "USDAI Sepolia Vault Accountant With Rate Providers V0.3";
-    string public constant UsdaiSepoliaVaultTellerName = "USDAI Sepolia Vault Teller With Multi Asset Support V0.3";
-    string public constant UsdaiSepoliaVaultDecoderAndSanitizerName = "USDAI Sepolia Vault Decoder and Sanitizer V0.3";
-    string public constant UsdaiSepoliaVaultDelayedWithdrawer = "USDAI Sepolia Vault Delayed Withdrawer V0.3";
-    string public constant UsdaiSepoliaVaultQueueName = "USDAI Sepolia Vault Queue V0.3";
-    string public constant UsdaiSepoliaVaultQueueSolverName = "USDAI Sepolia Vault Queue Solver V0.3";
-    string public constant UsdaiSepoliaLayerZeroTellerName = "USDAI Sepolia LayerZero Teller V1.0";
-    string public constant UsdaiSepoliaChainlinkCCIPTellerName = "USDAI Sepolia Chainlink CCIP Teller V0.0";
-    string public constant UsdaiSepoliaOpenEdenDecoderAndSanitizerName = "USDAI Sepolia OpenEden Decoder and Sanitizer V0.1";
-    string public constant UsdaiSepoliaMorphoDecoderAndSanitizerName = "USDAI Sepolia Morpho Decoder and Sanitizer V0.1";
-    string public constant UsdaiSepoliaAcrossDecoderAndSanitizerName = "USDAI Sepolia Across Decoder and Sanitizer V0.4";
-    // sUSDAI in sepolia
-    string public constant sUsdaiSepoliaBoringOnChainQueuesRolesAuthorityName = "sUSDAI Sepolia Boring OnChain Queues Roles Authority V0.1";
-    string public constant sUsdaiSepoliaVaultRolesAuthorityName = "sUSDAI Sepolia Vault RolesAuthority V0.1";
-    string public constant sUsdaiSepoliaArcticArchitectureLensName = "sUSDAI Sepolia Arctic Architecture Lens V0.1";
-    string public constant sUsdaiSepoliaVaultName = "sUSDAI Sepolia Vault V0.1";
-    string public constant sUsdaiSepoliaVaultManagerName = "sUSDAI Sepolia Vault Manager With Merkle Verification V0.1";
-    string public constant sUsdaiSepoliaVaultAccountantName = "sUSDAI Sepolia Vault Accountant With Rate Providers V0.1";
-    string public constant sUsdaiSepoliaVaultTellerName = "sUSDAI Sepolia Vault Teller With Multi Asset Support V0.1";
-    string public constant sUsdaiSepoliaVaultDecoderAndSanitizerName = "sUSDAI Sepolia Vault Decoder and Sanitizer V0.1";
-    string public constant sUsdaiSepoliaVaultDelayedWithdrawer = "sUSDAI Sepolia Vault Delayed Withdrawer V0.1";
-    string public constant sUsdaiSepoliaVaultQueueName = "sUSDAI Sepolia Vault Queue V0.1";
-    string public constant sUsdaiSepoliaVaultQueueSolverName = "sUSDAI Sepolia Vault Queue Solver V0.1";
-    string public constant sUsdaiSepoliaLayerZeroTellerName = "sUSDAI Sepolia LayerZero Teller V0.2";
-    string public constant sUsdaiSepoliaChainlinkCCIPTellerName = "sUSDAI Sepolia Chainlink CCIP Teller V0.0";
+    // sUSDAI 
+    string public constant sUsdaiBoringOnChainQueuesRolesAuthorityName = "sUSDAI Boring OnChain Queues Roles Authority V0.0";
+    string public constant sUsdaiVaultRolesAuthorityName = "sUSDAI Vault RolesAuthority V0.0";
+    string public constant sUsdaiArcticArchitectureLensName = "sUSDAI Arctic Architecture Lens V0.0";
+    string public constant sUsdaiVaultName = "sUSDAI Vault V0.0";
+    string public constant sUsdaiVaultManagerName = "sUSDAI Vault Manager With Merkle Verification V0.0";
+    string public constant sUsdaiVaultAccountantName = "sUSDAI Vault Accountant With Rate Providers V0.0";
+    string public constant sUsdaiVaultTellerName = "sUSDAI Vault Teller With Multi Asset Support V0.0";
+    string public constant sUsdaiVaultDecoderAndSanitizerName = "sUSDAI Vault Decoder and Sanitizer V0.0";
+    string public constant sUsdaiVaultDelayedWithdrawer = "sUSDAI Vault Delayed Withdrawer V0.0";
+    string public constant sUsdaiVaultQueueName = "sUSDAI Vault Queue V0.0";
+    string public constant sUsdaiVaultQueueSolverName = "sUSDAI Vault Queue Solver V0.0";
+    string public constant sUsdaiLayerZeroTellerName = "sUSDAI LayerZero Teller V0.0";
+    string public constant sUsdaiChainlinkCCIPTellerName = "sUSDAI Chainlink CCIP Teller V0.0";
 }

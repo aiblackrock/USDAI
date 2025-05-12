@@ -57,7 +57,7 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(devOwner, Authority(address(0)));
         RolesAuthority rolesAuthority = RolesAuthority(
-            deployer.deployContract(UsdaiMinatoBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
+            deployer.deployContract(UsdaiBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
         );
 
         // address[] memory assets = new address[](3);
@@ -105,10 +105,10 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         rolesAuthority.setUserRole(devOwner, SUPER_ADMIN_ROLE, true);
 
         _deployContracts(
-            UsdaiMinatoVaultName,
-            UsdaiMinatoVaultAccountantName,
-            UsdaiMinatoVaultQueueName,
-            UsdaiMinatoVaultQueueSolverName,
+            UsdaiVaultName,
+            UsdaiVaultAccountantName,
+            UsdaiVaultQueueName,
+            UsdaiVaultQueueSolverName,
             rolesAuthority,
             assets,
             assetsToSetup
@@ -222,11 +222,11 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         rolesAuthority.setUserRole(solver, CAN_SOLVE_ROLE, true);
 
         // Set extra role
-        RolesAuthority vaultRolesAuthority = RolesAuthority(deployer.getAddress(UsdaiMinatoVaultRolesAuthorityName));
+        RolesAuthority vaultRolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
         vaultRolesAuthority.setUserRole(solver, 12, true);
-        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiMinatoVaultTellerName), 3, true);
-        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiMinatoLayerZeroTellerName), 3, true);
-        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiMinatoChainlinkCCIPTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiVaultTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiLayerZeroTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiChainlinkCCIPTellerName), 3, true);
 
         // Transfer ownership.
         queue.transferOwnership(globalOwner);

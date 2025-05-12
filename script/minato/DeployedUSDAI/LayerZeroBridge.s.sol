@@ -42,11 +42,11 @@ contract USDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, M
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
         endpoint = ILayerZeroEndpointV2(0x6Ac7bdc07A0583A362F1497252872AE6c0A5F5B8);
-        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
-        sourceTellerAddress = deployer.getAddress(UsdaiMinatoLayerZeroTellerName);
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        sourceTellerAddress = deployer.getAddress(UsdaiLayerZeroTellerName);
         sourceTeller = LayerZeroTeller(sourceTellerAddress);
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiMinatoVaultAccountantName));
-        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiMinatoVaultRolesAuthorityName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiVaultAccountantName));
+        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
     }
 
     function run() public {

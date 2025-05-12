@@ -36,8 +36,8 @@ contract MorphoOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames {
         setSourceChainName("sepolia");
         
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        vault = BoringVault(payable(deployer.getAddress(UsdaiSepoliaVaultName)));
-        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiSepoliaVaultManagerName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiVaultManagerName));
     }
 
     function run() public {
@@ -46,10 +46,10 @@ contract MorphoOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames {
         
         vm.startBroadcast(privateKey);
         
-        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiSepoliaVaultName));
-        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiSepoliaVaultManagerName));
-        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiSepoliaMorphoDecoderAndSanitizerName));
+        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiVaultName));
+        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiVaultAccountantName));
+        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiMorphoDecoderAndSanitizerName));
 
         // 1. Create merkle tree leaves for allowed actions
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
@@ -87,9 +87,9 @@ contract MorphoOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames {
         targetData[2] = abi.encodeWithSignature("withdraw(uint256)",adapterId);
 
         address[] memory decodersAndSanitizers = new address[](opsAmt);  
-        decodersAndSanitizers[0] = deployer.getAddress(UsdaiSepoliaMorphoDecoderAndSanitizerName);
-        decodersAndSanitizers[1] = deployer.getAddress(UsdaiSepoliaMorphoDecoderAndSanitizerName);
-        decodersAndSanitizers[2] = deployer.getAddress(UsdaiSepoliaMorphoDecoderAndSanitizerName);
+        decodersAndSanitizers[0] = deployer.getAddress(UsdaiMorphoDecoderAndSanitizerName);
+        decodersAndSanitizers[1] = deployer.getAddress(UsdaiMorphoDecoderAndSanitizerName);
+        decodersAndSanitizers[2] = deployer.getAddress(UsdaiMorphoDecoderAndSanitizerName);
 
         uint256[] memory values = new uint256[](opsAmt);
 

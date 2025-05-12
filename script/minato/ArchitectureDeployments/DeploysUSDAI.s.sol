@@ -49,14 +49,14 @@ contract DeploysUSDAIScript is DeployArcticArchitectureWithoutFixedRate, MinatoA
         deployer = Deployer(configureDeployment.deployerAddress);
 
         // Define names to determine where contracts are deployed.
-        names.rolesAuthority = sUsdaiMinatoVaultRolesAuthorityName;
-        names.lens = sUsdaiMinatoArcticArchitectureLensName;
-        names.boringVault = sUsdaiMinatoVaultName;
-        names.manager = sUsdaiMinatoVaultManagerName;
-        names.accountant = sUsdaiMinatoVaultAccountantName;
-        names.teller = sUsdaiMinatoVaultTellerName;
-        names.rawDataDecoderAndSanitizer = sUsdaiMinatoVaultDecoderAndSanitizerName;
-        names.delayedWithdrawer = sUsdaiMinatoVaultDelayedWithdrawer;
+        names.rolesAuthority = sUsdaiVaultRolesAuthorityName;
+        names.lens = sUsdaiArcticArchitectureLensName;
+        names.boringVault = sUsdaiVaultName;
+        names.manager = sUsdaiVaultManagerName;
+        names.accountant = sUsdaiVaultAccountantName;
+        names.teller = sUsdaiVaultTellerName;
+        names.rawDataDecoderAndSanitizer = sUsdaiVaultDecoderAndSanitizerName;
+        names.delayedWithdrawer = sUsdaiVaultDelayedWithdrawer;
 
         // Define Accountant Parameters.
         accountantParameters.payoutAddress = liquidPayoutAddress;
@@ -89,7 +89,7 @@ contract DeploysUSDAIScript is DeployArcticArchitectureWithoutFixedRate, MinatoA
 
         _deploy(
             DeployParams({
-            deploymentFileName: "sUSDAIMinatoDeployment.json",
+            deploymentFileName: "sUsdaiDeployment.json",
             owner: owner,
             boringVaultName: boringVaultName,
             boringVaultSymbol: boringVaultSymbol,

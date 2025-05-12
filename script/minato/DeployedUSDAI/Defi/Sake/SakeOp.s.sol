@@ -30,8 +30,8 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
         setSourceChainName("minato");
         
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
-        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiMinatoVaultManagerName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiVaultManagerName));
     }
 
     function run() public {
@@ -40,9 +40,9 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
         
         vm.startBroadcast(privateKey);
         
-        setAddress(true, minato, "boringVault", deployer.getAddress(UsdaiMinatoVaultName));
-        setAddress(true, minato, "managerAddress", deployer.getAddress(UsdaiMinatoVaultManagerName));
-        setAddress(true, minato, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName));
+        setAddress(true, minato, "boringVault", deployer.getAddress(UsdaiVaultName));
+        setAddress(true, minato, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, minato, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiVaultDecoderAndSanitizerName));
                 
         console.log("Starting SakeOp script execution");
 
@@ -100,20 +100,20 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
         uint256 interestRateMode = 2;
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
         targetData[1] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
-        targetData[2] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "USDC"), USDCSupplyAmount, deployer.getAddress(UsdaiMinatoVaultName), 0);
-        targetData[3] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "ASTR"), ASTRSupplyAmount, deployer.getAddress(UsdaiMinatoVaultName), 0);
-        targetData[4] = abi.encodeWithSignature("borrow(address,uint256,uint256,uint16,address)", getAddress(sourceChain, "ASTR"), ASTRBorrowAmount, interestRateMode, 0, deployer.getAddress(UsdaiMinatoVaultName));
-        targetData[5] = abi.encodeWithSignature("repay(address,uint256,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRRepayAmount, interestRateMode, deployer.getAddress(UsdaiMinatoVaultName));
-        targetData[6] = abi.encodeWithSignature("withdraw(address,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRWithdrawAmount, deployer.getAddress(UsdaiMinatoVaultName));
+        targetData[2] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "USDC"), USDCSupplyAmount, deployer.getAddress(UsdaiVaultName), 0);
+        targetData[3] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "ASTR"), ASTRSupplyAmount, deployer.getAddress(UsdaiVaultName), 0);
+        targetData[4] = abi.encodeWithSignature("borrow(address,uint256,uint256,uint16,address)", getAddress(sourceChain, "ASTR"), ASTRBorrowAmount, interestRateMode, 0, deployer.getAddress(UsdaiVaultName));
+        targetData[5] = abi.encodeWithSignature("repay(address,uint256,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRRepayAmount, interestRateMode, deployer.getAddress(UsdaiVaultName));
+        targetData[6] = abi.encodeWithSignature("withdraw(address,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRWithdrawAmount, deployer.getAddress(UsdaiVaultName));
 
         address[] memory decodersAndSanitizers = new address[](opsAmt);  
-        decodersAndSanitizers[0] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[1] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[2] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[3] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[4] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[5] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
-        decodersAndSanitizers[6] = deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[0] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[1] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[2] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[3] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[4] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[5] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
+        decodersAndSanitizers[6] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
         uint256[] memory values = new uint256[](opsAmt);
 
         // 5. Execute the actions through the manager

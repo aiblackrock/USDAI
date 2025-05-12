@@ -40,8 +40,8 @@ contract DeployMorphoDecoderAndSanitizerScript is Script, ContractNames, Sepolia
 
 
         creationCode = type(MorphoDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(deployer.getAddress(UsdaiSepoliaVaultName));
-        deployer.deployContract(UsdaiSepoliaMorphoDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(deployer.getAddress(UsdaiVaultName));
+        deployer.deployContract(UsdaiMorphoDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

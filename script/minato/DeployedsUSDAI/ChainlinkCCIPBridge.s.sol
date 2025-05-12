@@ -41,11 +41,11 @@ contract ChainlinkCCIPBridgeScript is Script, MinatoAddresses, ContractNames, Me
         setSourceChainName("minato");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(sUsdaiMinatoVaultName)));
-        sourceTellerAddress = deployer.getAddress(sUsdaiMinatoChainlinkCCIPTellerName);
+        vault = BoringVault(payable(deployer.getAddress(sUsdaiVaultName)));
+        sourceTellerAddress = deployer.getAddress(sUsdaiChainlinkCCIPTellerName);
         sourceTeller = ChainlinkCCIPTeller(sourceTellerAddress);
-        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiMinatoVaultAccountantName));
-        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiMinatoVaultRolesAuthorityName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiVaultAccountantName));
+        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiVaultRolesAuthorityName));
     }
 
     function run() public {
