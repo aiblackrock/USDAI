@@ -2367,11 +2367,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             morpho,
             false,
             "deposit(uint256,uint256)",
-            new address[](0),
+            new address[](1),
             "Deposit to Morpho",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
-
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
         // Withdraw
         unchecked {
             leafIndex++;
@@ -2380,10 +2380,11 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
             morpho,
             false,
             "withdraw(uint256)",
-            new address[](0),
+            new address[](1)    ,
             "Withdraw from Morpho",
             getAddress(sourceChain, "rawDataDecoderAndSanitizer")
         );
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
     }
 
     // ========================================= Across =========================================
