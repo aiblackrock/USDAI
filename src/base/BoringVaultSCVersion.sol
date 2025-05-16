@@ -193,11 +193,11 @@ contract BoringVaultSCVersion is Auth, Initializable, ERC20Upgradeable, UUPSUpgr
         emit CrosschainBurn(_from, _amount, msg.sender);
     }
 
-    // /// @inheritdoc IERC165
-    // function supportsInterface(bytes4 _interfaceId) public view virtual returns (bool) {
-    //     return _interfaceId == type(IERC7802).interfaceId || _interfaceId == type(IERC20).interfaceId
-    //         || _interfaceId == type(IERC165).interfaceId;
-    // }
+    /// @inheritdoc IERC165
+    function supportsInterface(bytes4 _interfaceId) public view virtual override (ERC1155Holder, IERC165)returns (bool) {
+        return _interfaceId == type(IERC7802).interfaceId || _interfaceId == type(IERC20).interfaceId
+            || _interfaceId == type(IERC165).interfaceId || super.supportsInterface(_interfaceId);
+    }
 
     //============================== RECEIVE ===============================
 
