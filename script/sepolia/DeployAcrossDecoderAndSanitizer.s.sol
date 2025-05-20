@@ -21,7 +21,6 @@ import "forge-std/StdJson.sol";
 contract DeployAcrossDecoderAndSanitizerScript is Script, ContractNames, SepoliaAddresses, MerkleTreeHelper {
     uint256 public privateKey;
     Deployer public deployer = Deployer(deployerAddress);
-    address public acrossPool = 0x5ef6C01E11889d86803e0B23e3cB3F9E9d97B662;
     //Deployer public bobDeployer = Deployer(0xF3d0672a91Fd56C9ef04C79ec67d60c34c6148a0); 
 
     function setUp() external {
@@ -35,7 +34,7 @@ contract DeployAcrossDecoderAndSanitizerScript is Script, ContractNames, Sepolia
         vm.startBroadcast(privateKey);
 
         creationCode = type(AcrossDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(deployer.getAddress(UsdaiSepoliaVaultName), acrossPool);
+        constructorArgs = abi.encode(deployer.getAddress(UsdaiSepoliaVaultName));
         deployer.deployContract(UsdaiSepoliaAcrossDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
