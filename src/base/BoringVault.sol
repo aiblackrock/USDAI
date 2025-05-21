@@ -27,6 +27,8 @@ contract BoringVault is Auth, Initializable, ERC20Upgradeable, UUPSUpgradeable, 
 
     uint8 private _decimals;
 
+    uint256 public maxTotalSupply = 10_000_000;
+
     //============================== EVENTS ===============================
 
     event Enter(address indexed from, address indexed asset, uint256 amount, address indexed to, uint256 shares);
@@ -99,6 +101,9 @@ contract BoringVault is Auth, Initializable, ERC20Upgradeable, UUPSUpgradeable, 
         external
         requiresAuth
     {
+        // Check if total supply would exceed max
+        require(totalSupply() + shareAmount <= maxTotalSupply, "Exceeds max total supply");
+
         // Transfer assets in
         if (assetAmount > 0) asset.safeTransferFrom(from, address(this), assetAmount);
 
@@ -161,5 +166,13 @@ contract BoringVault is Auth, Initializable, ERC20Upgradeable, UUPSUpgradeable, 
 
     function decimals() public view override returns (uint8) {
         return _decimals;
+    }
+
+    /**
+     * @notice Sets the maximum total supply of shares.
+     * @dev Callable by authorized roles.
+     */
+    function setMaxTotalSupply(uint256 _maxTotalSupply) external requiresAuth {
+        maxTotalSupply = _maxTotalSupply;
     }
 }
