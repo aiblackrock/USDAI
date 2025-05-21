@@ -114,6 +114,16 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
      */
     bool public isPaused;
 
+    /**
+     * @notice Mapping to track whitelisted addresses.
+     */
+    mapping(address => bool) public whitelist;
+
+    /**
+     * @notice The divisor used to reduce maturity time for whitelisted users.
+     */
+    uint8 public whitelistMaturityDivisor = 10;
+
     //============================== ERRORS ===============================
 
     error BoringOnChainQueue__Paused();
@@ -134,6 +144,7 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
     error BoringOnChainQueue__MAXIMUM_SECONDS_TO_MATURITY();
     error BoringOnChainQueue__BadInput();
     error BoringOnChainQueue__RescueCannotTakeSharesFromActiveRequests();
+    error BoringOnChainQueue__BadWhitelistDivisor();
 
     //============================== EVENTS ===============================
 
@@ -176,6 +187,12 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
     event Paused();
 
     event Unpaused();
+
+    event WhitelistAdded(address indexed user);
+
+    event WhitelistRemoved(address indexed user);
+
+    event WhitelistMaturityDivisorUpdated(uint8 newDivisor);
 
     //============================== IMMUTABLES ===============================
 
@@ -328,6 +345,37 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
         }
     }
 
+    /**
+     * @notice Add an address to the whitelist.
+     * @dev Callable by MULTISIG_ROLE.
+     * @param user The address to add to the whitelist.
+     */
+    function addToWhitelist(address user) external requiresAuth {
+        whitelist[user] = true;
+        emit WhitelistAdded(user);
+    }
+
+    /**
+     * @notice Remove an address from the whitelist.
+     * @dev Callable by MULTISIG_ROLE.
+     * @param user The address to remove from the whitelist.
+     */
+    function removeFromWhitelist(address user) external requiresAuth {
+        whitelist[user] = false;
+        emit WhitelistRemoved(user);
+    }
+
+    /**
+     * @notice Update the whitelist maturity divisor.
+     * @dev Callable by MULTISIG_ROLE.
+     * @param newDivisor The new divisor value.
+     */
+    function updateWhitelistMaturityDivisor(uint8 newDivisor) external requiresAuth {
+        require(newDivisor > 0, "Divisor must be greater than 0");
+        whitelistMaturityDivisor = newDivisor;
+        emit WhitelistMaturityDivisorUpdated(newDivisor);
+    }
+
     //=============================== USER FUNCTIONS ================================
 
     /**
@@ -447,7 +495,15 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
         uint256 requestsLength = requests.length;
         for (uint256 i = 0; i < requestsLength; ++i) {
             if (address(solveAsset) != requests[i].assetOut) revert BoringOnChainQueue__SolveAssetMismatch();
-            uint256 maturity = requests[i].creationTime + requests[i].secondsToMaturity;
+            
+            // Calculate maturity time based on whitelist status
+            uint256 maturity;
+            if (whitelist[requests[i].user]) {
+                maturity = requests[i].creationTime + (requests[i].secondsToMaturity / whitelistMaturityDivisor);
+            } else {
+                maturity = requests[i].creationTime + requests[i].secondsToMaturity;
+            }
+            
             if (block.timestamp < maturity) revert BoringOnChainQueue__NotMatured();
             uint256 deadline = maturity + requests[i].secondsToDeadline;
             if (block.timestamp > deadline) revert BoringOnChainQueue__DeadlinePassed();
