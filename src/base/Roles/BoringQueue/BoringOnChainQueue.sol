@@ -298,7 +298,7 @@ contract BoringOnChainQueue is Auth, ReentrancyGuard, IPausable {
         });
 
         emit WithdrawAssetUpdated(
-            assetOut, secondsToMaturity, minimumSecondsToDeadline, minDiscount, maxDiscount, minimumShares
+            assetOut, minimumSecondsToDeadline, secondsToMaturity, minDiscount, maxDiscount, minimumShares
         );
     }
 
