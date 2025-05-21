@@ -28,8 +28,8 @@ contract ClaimYield is Script, MinatoAddresses, ContractNames, MerkleTreeHelper 
         vm.startBroadcast(privateKey);
 
         // Get addresses from address book
-        BoringVault boringVault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
-        AccountantWithFixedRate accountant = AccountantWithFixedRate(deployer.getAddress(UsdaiMinatoVaultAccountantName));
+        BoringVault boringVault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        AccountantWithFixedRate accountant = AccountantWithFixedRate(deployer.getAddress(UsdaiVaultAccountantName));
         
         // Get yield information
         (uint96 yieldEarned, address distributor) = accountant.fixedRateAccountantState();

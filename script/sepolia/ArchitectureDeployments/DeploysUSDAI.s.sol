@@ -49,14 +49,14 @@ contract DeploysUSDAIScript is DeployArcticArchitectureWithoutFixedRate, Sepolia
         deployer = Deployer(configureDeployment.deployerAddress);
 
         // Define names to determine where contracts are deployed.
-        names.rolesAuthority = sUsdaiSepoliaVaultRolesAuthorityName;
-        names.lens = sUsdaiSepoliaArcticArchitectureLensName;
-        names.boringVault = sUsdaiSepoliaVaultName;
-        names.manager = sUsdaiSepoliaVaultManagerName;
-        names.accountant = sUsdaiSepoliaVaultAccountantName;
-        names.teller = sUsdaiSepoliaVaultTellerName;
-        names.rawDataDecoderAndSanitizer = sUsdaiSepoliaVaultDecoderAndSanitizerName;
-        names.delayedWithdrawer = sUsdaiSepoliaVaultDelayedWithdrawer;
+        names.rolesAuthority = sUsdaiVaultRolesAuthorityName;
+        names.lens = sUsdaiArcticArchitectureLensName;
+        names.boringVault = sUsdaiVaultName;
+        names.manager = sUsdaiVaultManagerName;
+        names.accountant = sUsdaiVaultAccountantName;
+        names.teller = sUsdaiVaultTellerName;
+        names.rawDataDecoderAndSanitizer = sUsdaiVaultDecoderAndSanitizerName;
+        names.delayedWithdrawer = sUsdaiVaultDelayedWithdrawer;
 
         // Define Accountant Parameters.
         accountantParameters.payoutAddress = liquidPayoutAddress;

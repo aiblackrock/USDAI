@@ -39,11 +39,11 @@ contract USDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames, 
         setSourceChainName("sepolia");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(UsdaiSepoliaVaultName)));
-        sourceTellerAddress = deployer.getAddress(UsdaiSepoliaLayerZeroTellerName);
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        sourceTellerAddress = deployer.getAddress(UsdaiLayerZeroTellerName);
         sourceTeller = LayerZeroTeller(sourceTellerAddress);
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiSepoliaVaultRolesAuthorityName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiVaultAccountantName));
+        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
     }
 
     function run() public {

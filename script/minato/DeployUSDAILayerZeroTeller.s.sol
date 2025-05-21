@@ -35,9 +35,9 @@ contract DeployLayerZeroTellerScript is Script, ContractNames, MinatoAddresses, 
         vm.createSelectFork("minato");
         setSourceChainName(minato);
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        boringVault = deployer.getAddress(UsdaiMinatoVaultName);
-        accountant = deployer.getAddress(UsdaiMinatoVaultAccountantName);
-        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiMinatoVaultRolesAuthorityName));
+        boringVault = deployer.getAddress(UsdaiVaultName);
+        accountant = deployer.getAddress(UsdaiVaultAccountantName);
+        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
     }
 
     function run() external {
@@ -48,7 +48,7 @@ contract DeployLayerZeroTellerScript is Script, ContractNames, MinatoAddresses, 
         creationCode = type(LayerZeroTeller).creationCode;
         constructorArgs = abi.encode(dev1Address, boringVault, accountant, weth, lzEndPoint, dev1Address, address(0));
         layerZeroTeller = LayerZeroTeller(
-            deployer.deployContract(UsdaiMinatoLayerZeroTellerName, creationCode, constructorArgs, 0)
+            deployer.deployContract(UsdaiLayerZeroTellerName, creationCode, constructorArgs, 0)
         );
         layerZeroTeller.setAuthority(rolesAuthority);
         rolesAuthority.setUserRole(address(layerZeroTeller), MINTER_ROLE, true);

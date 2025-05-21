@@ -39,7 +39,7 @@ contract DeployDeployerScript is Script, ContractNames, SepoliaAddresses {
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(dev0Address, Authority(address(0)));
         rolesAuthority =
-            RolesAuthority(deployer.deployContract(UsdaiSepoliaVaultRolesAuthorityName, creationCode, constructorArgs, 0));
+            RolesAuthority(deployer.deployContract(UsdaiVaultRolesAuthorityName, creationCode, constructorArgs, 0));
 
         deployer.setAuthority(rolesAuthority);
 

@@ -49,14 +49,14 @@ contract DeployUSDAIScript is DeployArcticArchitecture, MinatoAddresses {
         deployer = Deployer(configureDeployment.deployerAddress);
 
         // Define names to determine where contracts are deployed.
-        names.rolesAuthority = UsdaiMinatoVaultRolesAuthorityName;
-        names.lens = UsdaiMinatoArcticArchitectureLensName;
-        names.boringVault = UsdaiMinatoVaultName;
-        names.manager = UsdaiMinatoVaultManagerName;
-        names.accountant = UsdaiMinatoVaultAccountantName;
-        names.teller = UsdaiMinatoVaultTellerName;
-        names.rawDataDecoderAndSanitizer = UsdaiMinatoVaultDecoderAndSanitizerName;
-        names.delayedWithdrawer = UsdaiMinatoVaultDelayedWithdrawer;
+        names.rolesAuthority = UsdaiVaultRolesAuthorityName;
+        names.lens = UsdaiArcticArchitectureLensName;
+        names.boringVault = UsdaiVaultName;
+        names.manager = UsdaiVaultManagerName;
+        names.accountant = UsdaiVaultAccountantName;
+        names.teller = UsdaiVaultTellerName;
+        names.rawDataDecoderAndSanitizer = UsdaiVaultDecoderAndSanitizerName;
+        names.delayedWithdrawer = UsdaiVaultDelayedWithdrawer;
 
         // Define Accountant Parameters.
         accountantParameters.payoutAddress = liquidPayoutAddress;

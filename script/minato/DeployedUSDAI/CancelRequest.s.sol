@@ -40,11 +40,11 @@ contract USDAICancelRequestScript is Script, MinatoAddresses, ContractNames, Mer
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
         // Initialize contract instances
-        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
-        teller = TellerWithMultiAssetSupport(deployer.getAddress(UsdaiMinatoVaultTellerName));
-        lens = ArcticArchitectureLens(deployer.getAddress(UsdaiMinatoArcticArchitectureLensName));
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiMinatoVaultAccountantName));
-        queue = BoringOnChainQueueWithTracking(deployer.getAddress(UsdaiMinatoVaultQueueName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        teller = TellerWithMultiAssetSupport(deployer.getAddress(UsdaiVaultTellerName));
+        lens = ArcticArchitectureLens(deployer.getAddress(UsdaiArcticArchitectureLensName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiVaultAccountantName));
+        queue = BoringOnChainQueueWithTracking(deployer.getAddress(UsdaiVaultQueueName));
     }
 
     function run() public {

@@ -36,9 +36,9 @@ contract AcrossNativeBridgeScript is Script, SepoliaAddresses, ContractNames, Me
         setSourceChainName("sepolia");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(UsdaiSepoliaVaultName)));
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiSepoliaVaultManagerName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiVaultAccountantName));
+        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiVaultManagerName));
     }
 
     function run() public {
@@ -46,10 +46,10 @@ contract AcrossNativeBridgeScript is Script, SepoliaAddresses, ContractNames, Me
         address auth = vm.addr(privateKey);
         vm.startBroadcast(privateKey);
         
-        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiSepoliaVaultName));
-        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiSepoliaVaultManagerName));
-        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiSepoliaAcrossDecoderAndSanitizerName));
+        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiVaultName));
+        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiVaultAccountantName));
+        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiAcrossDecoderAndSanitizerName));
 
         // 1. Create merkle tree leaves for allowed actions
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
@@ -80,7 +80,7 @@ contract AcrossNativeBridgeScript is Script, SepoliaAddresses, ContractNames, Me
 
         targetData[1] = abi.encodeWithSignature(
             "depositV3(address,address,address,address,uint256,uint256,uint256,address,uint32,uint32,uint32,bytes)",
-            deployer.getAddress(UsdaiSepoliaVaultName),
+            deployer.getAddress(UsdaiVaultName),
             auth,
             getAddress(sourceChain, "USDC"),
             baseSepoliaUSDC,
@@ -95,8 +95,8 @@ contract AcrossNativeBridgeScript is Script, SepoliaAddresses, ContractNames, Me
         );
 
         address[] memory decodersAndSanitizers = new address[](opsAmt);  
-        decodersAndSanitizers[0] = deployer.getAddress(UsdaiSepoliaAcrossDecoderAndSanitizerName);
-        decodersAndSanitizers[1] = deployer.getAddress(UsdaiSepoliaAcrossDecoderAndSanitizerName);
+        decodersAndSanitizers[0] = deployer.getAddress(UsdaiAcrossDecoderAndSanitizerName);
+        decodersAndSanitizers[1] = deployer.getAddress(UsdaiAcrossDecoderAndSanitizerName);
 
         uint256[] memory values = new uint256[](opsAmt);
 

@@ -35,9 +35,9 @@ contract DeployChainlinkCCIPTellerScript is Script, ContractNames, SepoliaAddres
         vm.createSelectFork("sepolia");
         setSourceChainName(sepolia);
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        boringVault = deployer.getAddress(UsdaiSepoliaVaultName);
-        accountant = deployer.getAddress(UsdaiSepoliaVaultAccountantName);
-        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiSepoliaVaultRolesAuthorityName));
+        boringVault = deployer.getAddress(UsdaiVaultName);
+        accountant = deployer.getAddress(UsdaiVaultAccountantName);
+        rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
     }
 
     function run() external {
@@ -48,7 +48,7 @@ contract DeployChainlinkCCIPTellerScript is Script, ContractNames, SepoliaAddres
         creationCode = type(ChainlinkCCIPTeller).creationCode;
         constructorArgs = abi.encode(dev1Address, boringVault, accountant, weth, ccipRouter);
         chainlinkCCIPTeller = ChainlinkCCIPTeller(
-            deployer.deployContract(UsdaiSepoliaChainlinkCCIPTellerName, creationCode, constructorArgs, 0)
+            deployer.deployContract(UsdaiChainlinkCCIPTellerName, creationCode, constructorArgs, 0)
         );
         chainlinkCCIPTeller.setAuthority(rolesAuthority);
         rolesAuthority.setUserRole(address(chainlinkCCIPTeller), MINTER_ROLE, true);

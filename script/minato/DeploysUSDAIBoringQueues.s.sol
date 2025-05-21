@@ -58,7 +58,7 @@ contract DeploysUSDAIBoringQueuesScript is Script, ContractNames, MerkleTreeHelp
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(devOwner, Authority(address(0)));
         RolesAuthority rolesAuthority = RolesAuthority(
-            deployer.deployContract(sUsdaiMinatoBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
+            deployer.deployContract(sUsdaiBoringOnChainQueuesRolesAuthorityName, creationCode, constructorArgs, 0)
         );
 
         address[] memory assets = new address[](1);
@@ -81,10 +81,10 @@ contract DeploysUSDAIBoringQueuesScript is Script, ContractNames, MerkleTreeHelp
         rolesAuthority.setUserRole(devOwner, SUPER_ADMIN_ROLE, true);
 
         _deployContracts(
-            sUsdaiMinatoVaultName,
-            sUsdaiMinatoVaultAccountantName,
-            sUsdaiMinatoVaultQueueName,
-            sUsdaiMinatoVaultQueueSolverName,
+            sUsdaiVaultName,
+            sUsdaiVaultAccountantName,
+            sUsdaiVaultQueueName,
+            sUsdaiVaultQueueSolverName,
             rolesAuthority,
             assets,
             assetsToSetup

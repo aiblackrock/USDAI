@@ -40,8 +40,8 @@ contract DeployOpenEdenDecoderAndSanitizerScript is Script, ContractNames, Sepol
 
 
         creationCode = type(OpenEdenDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(deployer.getAddress(UsdaiSepoliaVaultName));
-        deployer.deployContract(UsdaiSepoliaOpenEdenDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(deployer.getAddress(UsdaiVaultName));
+        deployer.deployContract(UsdaiOpenEdenDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

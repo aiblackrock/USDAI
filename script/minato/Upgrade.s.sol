@@ -29,14 +29,14 @@ contract UpgradeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelp
         setSourceChainName("minato");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
     }
 
     function run() public {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
-        // RolesAuthority rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiMinatoVaultRolesAuthorityName));
+        // RolesAuthority rolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
         // rolesAuthority.setRoleCapability(
         //     1,
         //     address(vault),
@@ -45,7 +45,7 @@ contract UpgradeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelp
         // );
 
         address newImplementation = deployer.deployContract(
-            string.concat(UsdaiMinatoVaultName, "-SCVersion-Implementation"),
+            string.concat(UsdaiVaultName, "-SCVersion-Implementation"),
             type(BoringVaultSCVersion).creationCode,
             hex"",
             0

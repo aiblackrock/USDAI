@@ -25,7 +25,7 @@ contract CreateUSDAIMerkleRootScript is Script, MerkleTreeHelper, ContractNames 
         vm.createSelectFork("minato");
         setSourceChainName("minato");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiMinatoVaultManagerName));
+        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiVaultManagerName));
     }
 
     /**
@@ -36,10 +36,10 @@ contract CreateUSDAIMerkleRootScript is Script, MerkleTreeHelper, ContractNames 
         vm.startBroadcast(privateKey);
         address auth = vm.addr(privateKey);
 
-        setAddress(true, minato, "boringVault", deployer.getAddress(UsdaiMinatoVaultName));
-        setAddress(true, minato, "managerAddress", deployer.getAddress(UsdaiMinatoVaultManagerName));
-        setAddress(true, minato, "accountantAddress", deployer.getAddress(UsdaiMinatoVaultAccountantName));
-        setAddress(true, minato, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiMinatoVaultDecoderAndSanitizerName));
+        setAddress(true, minato, "boringVault", deployer.getAddress(UsdaiVaultName));
+        setAddress(true, minato, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, minato, "accountantAddress", deployer.getAddress(UsdaiVaultAccountantName));
+        setAddress(true, minato, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiVaultDecoderAndSanitizerName));
 
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
 

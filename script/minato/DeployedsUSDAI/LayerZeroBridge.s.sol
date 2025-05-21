@@ -40,11 +40,11 @@ contract sUSDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, 
         setSourceChainName("minato");
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
-        vault = BoringVault(payable(deployer.getAddress(sUsdaiMinatoVaultName)));
-        sourceTellerAddress = deployer.getAddress(sUsdaiMinatoLayerZeroTellerName);
+        vault = BoringVault(payable(deployer.getAddress(sUsdaiVaultName)));
+        sourceTellerAddress = deployer.getAddress(sUsdaiLayerZeroTellerName);
         sourceTeller = LayerZeroTeller(sourceTellerAddress);
-        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiMinatoVaultAccountantName));
-        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiMinatoVaultRolesAuthorityName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiVaultAccountantName));
+        rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiVaultRolesAuthorityName));
     }
 
     function run() public {

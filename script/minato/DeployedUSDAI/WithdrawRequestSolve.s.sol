@@ -40,12 +40,12 @@ contract USDAIWithdrawRequestSolveScript is Script, MinatoAddresses, ContractNam
         setSourceChainName("minato");
         
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        vault = BoringVault(payable(deployer.getAddress(UsdaiMinatoVaultName)));
-        teller = TellerWithMultiAssetSupport(deployer.getAddress(UsdaiMinatoVaultTellerName));
-        lens = ArcticArchitectureLens(deployer.getAddress(UsdaiMinatoArcticArchitectureLensName));
-        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiMinatoVaultAccountantName));
-        queue = BoringOnChainQueueWithTracking(deployer.getAddress(UsdaiMinatoVaultQueueName));
-        solver = BoringSolver(deployer.getAddress(UsdaiMinatoVaultQueueSolverName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        teller = TellerWithMultiAssetSupport(deployer.getAddress(UsdaiVaultTellerName));
+        lens = ArcticArchitectureLens(deployer.getAddress(UsdaiArcticArchitectureLensName));
+        accountant = AccountantWithRateProviders(deployer.getAddress(UsdaiVaultAccountantName));
+        queue = BoringOnChainQueueWithTracking(deployer.getAddress(UsdaiVaultQueueName));
+        solver = BoringSolver(deployer.getAddress(UsdaiVaultQueueSolverName));
     }
 
     function run() public {

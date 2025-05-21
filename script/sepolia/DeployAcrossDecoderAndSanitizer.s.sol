@@ -34,8 +34,8 @@ contract DeployAcrossDecoderAndSanitizerScript is Script, ContractNames, Sepolia
         vm.startBroadcast(privateKey);
 
         creationCode = type(AcrossDecoderAndSanitizer).creationCode;
-        constructorArgs = abi.encode(deployer.getAddress(UsdaiSepoliaVaultName));
-        deployer.deployContract(UsdaiSepoliaAcrossDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+        constructorArgs = abi.encode(deployer.getAddress(UsdaiVaultName));
+        deployer.deployContract(UsdaiAcrossDecoderAndSanitizerName, creationCode, constructorArgs, 0);
 
         vm.stopBroadcast();
     }

@@ -37,8 +37,8 @@ contract OpenEdenOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames
         setSourceChainName("sepolia");
         
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
-        vault = BoringVault(payable(deployer.getAddress(UsdaiSepoliaVaultName)));
-        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiSepoliaVaultManagerName));
+        vault = BoringVault(payable(deployer.getAddress(UsdaiVaultName)));
+        manager = ManagerWithMerkleVerification(deployer.getAddress(UsdaiVaultManagerName));
     }
 
     function run() public {
@@ -47,10 +47,10 @@ contract OpenEdenOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames
         
         vm.startBroadcast(privateKey);
         
-        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiSepoliaVaultName));
-        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiSepoliaVaultManagerName));
-        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiSepoliaVaultAccountantName));
-        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiSepoliaOpenEdenDecoderAndSanitizerName));
+        setAddress(true, sepolia, "boringVault", deployer.getAddress(UsdaiVaultName));
+        setAddress(true, sepolia, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, sepolia, "accountantAddress", deployer.getAddress(UsdaiVaultAccountantName));
+        setAddress(true, sepolia, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiOpenEdenDecoderAndSanitizerName));
 
         // 1. Create merkle tree leaves for allowed actions
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
@@ -84,13 +84,13 @@ contract OpenEdenOp is Script, SepoliaAddresses, MerkleTreeHelper, ContractNames
         uint256 USDOWithdrawAmount = 4000e18;
 
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", USDOExpress, type(uint256).max);
-        targetData[1] = abi.encodeWithSignature("instantMint(address,address,uint256)",TEST_USDC,deployer.getAddress(UsdaiSepoliaVaultName),USDCSupplyAmount);
-        targetData[2] = abi.encodeWithSignature("instantRedeem(address,uint256)",deployer.getAddress(UsdaiSepoliaVaultName),USDOWithdrawAmount);
+        targetData[1] = abi.encodeWithSignature("instantMint(address,address,uint256)",TEST_USDC,deployer.getAddress(UsdaiVaultName),USDCSupplyAmount);
+        targetData[2] = abi.encodeWithSignature("instantRedeem(address,uint256)",deployer.getAddress(UsdaiVaultName),USDOWithdrawAmount);
 
         address[] memory decodersAndSanitizers = new address[](opsAmt);  
-        decodersAndSanitizers[0] = deployer.getAddress(UsdaiSepoliaOpenEdenDecoderAndSanitizerName);
-        decodersAndSanitizers[1] = deployer.getAddress(UsdaiSepoliaOpenEdenDecoderAndSanitizerName);
-        decodersAndSanitizers[2] = deployer.getAddress(UsdaiSepoliaOpenEdenDecoderAndSanitizerName);
+        decodersAndSanitizers[0] = deployer.getAddress(UsdaiOpenEdenDecoderAndSanitizerName);
+        decodersAndSanitizers[1] = deployer.getAddress(UsdaiOpenEdenDecoderAndSanitizerName);
+        decodersAndSanitizers[2] = deployer.getAddress(UsdaiOpenEdenDecoderAndSanitizerName);
 
         uint256[] memory values = new uint256[](opsAmt);
 
