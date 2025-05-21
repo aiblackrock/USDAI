@@ -30,10 +30,23 @@ contract DeployDeployerScript is Script, ContractNames, MinatoAddresses {
     function run() external {
         bytes memory creationCode;
         bytes memory constructorArgs;
+        bytes32 DEPLOYER_SALT = keccak256(abi.encode(UsdaiDeployerName));
  
         vm.startBroadcast(privateKey);
 
-        deployer = new Deployer(dev0Address, Authority(address(0)));
+        creationCode = type(Deployer).creationCode;
+        constructorArgs = abi.encode(dev0Address, Authority(address(0)));
+        bytes memory initCode = abi.encodePacked(creationCode, constructorArgs);
+        
+        address predictedAddress = computeCreate2Address(DEPLOYER_SALT, keccak256(initCode));
+        console.log("Deployer will be deployed at:", predictedAddress);
+        
+        address deployerAddress = deployWithCreate2(initCode, DEPLOYER_SALT);
+        
+        require(deployerAddress != address(0), "CREATE2 deployment failed");
+        console.log("Deployer successfully deployed at:", deployerAddress);
+        deployer = Deployer(deployerAddress);
+        // deployer = new Deployer(dev0Address, Authority(address(0)));
         // require(address(deployer) == 0x5F2F11ad8656439d5C14d9B351f8b09cDaC2A02d, string(abi.encodePacked("Deployer deployment failed. Actual address: ", vm.toString(address(deployer)))));
         creationCode = type(RolesAuthority).creationCode;
         constructorArgs = abi.encode(dev0Address, Authority(address(0)));
@@ -47,5 +60,14 @@ contract DeployDeployerScript is Script, ContractNames, MinatoAddresses {
         rolesAuthority.setUserRole(dev1Address, DEPLOYER_ROLE, true);
 
         vm.stopBroadcast();
+    }
+
+    function deployWithCreate2(bytes memory initCode, bytes32 salt) internal returns (address deployedAddress) {
+        assembly {
+            deployedAddress := create2(0, add(initCode, 0x20), mload(initCode), salt)
+            if iszero(deployedAddress) {
+                revert(0, 0)
+            }
+        }
     }
 }
