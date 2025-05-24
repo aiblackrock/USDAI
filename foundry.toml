@@ -44,7 +44,7 @@ sepolia = "${SEPOLIA_RPC_URL}"
 # optimism = { key = "${OPTIMISMSCAN_KEY}" }
 # base = { key = "${BASESCAN_KEY}" }
 minato = { key = "${SONEIUM_KEY}", chain = 1946, url = "https://soneium-minato.blockscout.com/api" }
-sepolia = { key = "${SEPOLIA_KEY}", chain = 11155111, url = "https://api-sepolia.etherscan.io/api" }
+sepolia = { key = "${SEPOLIA_KEY}", chain = 11155111, url = "https://api.etherscan.io/v2/api?chainid=11155111" }
 
 [fmt]
 FOUNDRY_FMT_LINE_LENGTH = 120
