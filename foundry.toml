@@ -14,7 +14,7 @@ remappings = [
     "@forge-std/=lib/forge-std/src/",
     "@ds-test/=lib/forge-std/lib/ds-test/src/",
     "ds-test/=lib/forge-std/lib/ds-test/src/",
-    "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+    "@openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
     "@openzeppelin/=lib/openzeppelin-contracts/",
     "@ccip=lib/ccip/",
     "@oapp-auth=lib/OAppAuth/src/",
@@ -44,7 +44,7 @@ sepolia = "${SEPOLIA_RPC_URL}"
 # optimism = { key = "${OPTIMISMSCAN_KEY}" }
 # base = { key = "${BASESCAN_KEY}" }
 minato = { key = "${SONEIUM_KEY}", chain = 1946, url = "https://soneium-minato.blockscout.com/api" }
-sepolia = { key = "${SEPOLIA_KEY}", chain = 11155111, url = "https://api-sepolia.etherscan.io/api" }
+sepolia = { key = "${SEPOLIA_KEY}", chain = 11155111, url = "https://api.etherscan.io/v2/api?chainid=11155111" }
 
 [fmt]
 FOUNDRY_FMT_LINE_LENGTH = 120
