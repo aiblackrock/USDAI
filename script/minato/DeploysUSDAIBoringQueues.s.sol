@@ -156,7 +156,7 @@ contract DeploysUSDAIBoringQueuesScript is Script, ContractNames, MerkleTreeHelp
         rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueue.cancelOnChainWithdraw.selector, true);
         rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueue.replaceOnChainWithdraw.selector, true);
         rolesAuthority.setPublicCapability(solver, BoringSolver.boringRedeemSelfSolve.selector, true);
-        rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueue.cancelOnChainWithdrawUsingRequestId.selector, true);
+        rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueueWithTracking.cancelOnChainWithdrawUsingRequestId.selector, true);
         /// @notice By default the self solve functions are not made public.
 
         // CAN_SOLVE_ROLE
