@@ -333,6 +333,9 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
                     true
                 );
             }
+            if (!rolesAuthority.doesRoleHaveCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector)) {
+                rolesAuthority.setRoleCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector, true);
+            }
             // MINTER_ROLE
             if (!rolesAuthority.doesRoleHaveCapability(MINTER_ROLE, address(boringVault), BoringVault.enter.selector)) {
                 rolesAuthority.setRoleCapability(MINTER_ROLE, address(boringVault), BoringVault.enter.selector, true);
