@@ -253,6 +253,7 @@ contract ContractNames {
     string public constant sdeUSDRateProviderName = "sdeUSD Generic Rate Provider V0.0";
 
     // USDAI 
+    string public constant UsdaiDeployerName = "USDAI Deployer V0.1";
     string public constant UsdaiBoringOnChainQueuesRolesAuthorityName = "USDAI Boring OnChain Queues Roles Authority V0.1";
     string public constant UsdaiVaultRolesAuthorityName = "USDAI Vault RolesAuthority V0.1";
     string public constant UsdaiArcticArchitectureLensName = "USDAI Arctic Architecture Lens V0.1";
