@@ -304,6 +304,17 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
             }
         }
 
+        rolesAuthority.setUserRole(params.owner, MANAGER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MINTER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, BURNER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MANAGER_INTERNAL_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, SOLVER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, OWNER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MULTISIG_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, STRATEGIST_MULTISIG_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, STRATEGIST_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, UPDATE_EXCHANGE_RATE_ROLE, true);
+
         if (configureDeployment.setupRoles) {
             // Setup roles.
             // MANAGER_ROLE
