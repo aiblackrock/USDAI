@@ -2387,6 +2387,49 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         leafs[leafIndex].argumentAddresses[0] = _usdc;
     }
 
+    // ========================================= Kyo =========================================
+    function _addKyoLeafs(ManageLeaf[] memory leafs) internal {
+        // Approvals
+        address kyoRouter = 0xe54Ae3B49438dfEf203fC79858270c35B834905C;
+        address _usdc = getAddress(sourceChain, "USDC");
+        address tokenOut = 0xA5D6513082EF1F157A33A066293309E74A8aF6Df;
+        
+        // Add USDC approval
+        if (!tokenToSpenderToApprovalInTree[_usdc][kyoRouter]) {
+            unchecked {
+                leafIndex++;
+            }
+            leafs[leafIndex] = ManageLeaf(
+                _usdc,
+                false,
+                "approve(address,uint256)",
+                new address[](1),
+                "Approve USDC to Kyo",
+                getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            );
+            leafs[leafIndex].argumentAddresses[0] = kyoRouter;
+            tokenToSpenderToApprovalInTree[_usdc][kyoRouter] = true;
+        }
+
+        // exactInputSingle
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            kyoRouter,
+            false,
+            "exactInputSingle((address,address,uint24,address,uint256,uint256,uint256,uint160))",
+            new address[](3),
+            string.concat(
+                "Swap USDC for ", ERC20(tokenOut).symbol(), " using Kyo exactInputSingle"
+            ),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer") 
+        );
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
+        leafs[leafIndex].argumentAddresses[1] = tokenOut;
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); // recipient
+    }
+
     // ========================================= Uniswap V3 =========================================
 
     function _addUniswapV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {

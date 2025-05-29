@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.8.21;
+
+import {ChainValues} from "test/resources/ChainValues.sol";
+import {MerkleTreeHelper} from "test/resources/MerkleTreeHelper/MerkleTreeHelper.sol";
+import {Deployer} from "src/helper/Deployer.sol";
+import {MinatoAddresses} from "test/resources/MinatoAddresses.sol";
+import {ContractNames} from "resources/ContractNames.sol";
+import {KyoDecoderAndSanitizer} from "src/base/DecodersAndSanitizers/Protocols/KyoDecoderAndSanitizer.sol";
+
+import {BoringDrone} from "src/base/Drones/BoringDrone.sol";
+
+import "forge-std/Script.sol";
+import "forge-std/StdJson.sol";
+
+/**
+ *  source .env && forge script script/DeployDecoderAndSanitizer.s.sol:DeployDecoderAndSanitizerScript --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify --with-gas-price 30000000000
+ * @dev Optionally can change `--with-gas-price` to something more reasonable
+ */
+
+contract DeployKyoDecoderAndSanitizerScript is Script, ContractNames, MinatoAddresses, MerkleTreeHelper {
+    uint256 public privateKey;
+    Deployer public deployer = Deployer(deployerAddress);
+
+    function setUp() external {
+        privateKey = vm.envUint("PRIVATE_KEY");
+        vm.createSelectFork("minato");
+        setSourceChainName("minato"); 
+    }
+
+    function run() external {
+        bytes memory creationCode; bytes memory constructorArgs;
+        vm.startBroadcast(privateKey);
+
+        creationCode = type(KyoDecoderAndSanitizer).creationCode;
+        constructorArgs = abi.encode(
+            deployer.getAddress(UsdaiVaultName),
+            0xe54Ae3B49438dfEf203fC79858270c35B834905C  // Kyo router address
+        );
+        deployer.deployContract(UsdaiKyoDecoderAndSanitizerName, creationCode, constructorArgs, 0);
+
+        vm.stopBroadcast();
+    }
+}

@@ -270,6 +270,7 @@ contract ContractNames {
     string public constant UsdaiAcrossDecoderAndSanitizerName = "USDAI Across Decoder and Sanitizer V0.2";
     string public constant UsdaiMorphoDecoderAndSanitizerName = "USDAI Morpho Decoder and Sanitizer V0.2";
     string public constant UsdaiOpenEdenDecoderAndSanitizerName = "USDAI OpenEden Decoder and Sanitizer V0.2";
+    string public constant UsdaiKyoDecoderAndSanitizerName = "USDAI Kyo Decoder and Sanitizer V0.2";
 
     // sUSDAI 
     string public constant sUsdaiBoringOnChainQueuesRolesAuthorityName = "sUSDAI Boring OnChain Queues Roles Authority V0.2";
