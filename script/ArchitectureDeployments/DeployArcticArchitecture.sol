@@ -348,6 +348,7 @@ contract DeployArcticArchitecture is Script, ContractNames {
             }
             if (!rolesAuthority.doesRoleHaveCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector)) {
                 rolesAuthority.setRoleCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector, true);
+                boringVault.setMaxTotalSupply(100000000000);
             }
             rolesAuthority.setRoleCapability(
                 MANAGER_ROLE,

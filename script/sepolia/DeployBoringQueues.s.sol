@@ -194,6 +194,13 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         rolesAuthority.setUserRole(address(queue), ONLY_QUEUE_ROLE, true);
         rolesAuthority.setUserRole(solver, CAN_SOLVE_ROLE, true);
 
+        // Set extra role
+        RolesAuthority vaultRolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
+        vaultRolesAuthority.setUserRole(solver, 12, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiVaultTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiLayerZeroTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiChainlinkCCIPTellerName), 3, true);
+
         // Transfer ownership.
         queue.transferOwnership(globalOwner);
         BoringSolver(solver).transferOwnership(globalOwner);
