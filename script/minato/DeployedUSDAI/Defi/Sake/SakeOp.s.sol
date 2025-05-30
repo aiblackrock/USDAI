@@ -36,28 +36,29 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
 
     function run() public {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
-        // address auth = vm.addr(privateKey);
+        address auth = vm.addr(privateKey);
         
         vm.startBroadcast(privateKey);
         
         setAddress(true, minato, "boringVault", deployer.getAddress(UsdaiVaultName));
         setAddress(true, minato, "managerAddress", deployer.getAddress(UsdaiVaultManagerName));
+        setAddress(true, minato, "accountantAddress", deployer.getAddress(UsdaiVaultAccountantName));
         setAddress(true, minato, "rawDataDecoderAndSanitizer", deployer.getAddress(UsdaiVaultDecoderAndSanitizerName));
                 
         console.log("Starting SakeOp script execution");
 
         // 1. Create merkle tree leaves for allowed actions
         ManageLeaf[] memory leafs = new ManageLeaf[](128);
-        uint256 supplyAssetAmt = 2;
-        uint256 borrowAssetAmt = 2;
-        uint256 claimAssetAmt = 0;
-        ERC20[] memory supplyAssets = new ERC20[](supplyAssetAmt);
+        // uint256 supplyAssetAmt = 2;
+        // uint256 borrowAssetAmt = 2;
+        // uint256 claimAssetAmt = 0;
+        ERC20[] memory supplyAssets = new ERC20[](2);
         supplyAssets[0] = getERC20(sourceChain, "USDC");
         supplyAssets[1] = getERC20(sourceChain, "ASTR");
-        ERC20[] memory borrowAssets = new ERC20[](borrowAssetAmt);
+        ERC20[] memory borrowAssets = new ERC20[](2);
         borrowAssets[0] = getERC20(sourceChain, "USDC");
         borrowAssets[1] = getERC20(sourceChain, "ASTR");
-        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets, new ERC20[](claimAssetAmt));
+        _addAaveV3Leafs(leafs, supplyAssets, borrowAssets, new ERC20[](0));
 
         // 2. Generate the merkle tree and get the root
         bytes32[][] memory manageTree = _generateMerkleTree(leafs);
@@ -92,19 +93,19 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
         targets[6] = getAddress(sourceChain, "v3Pool");
 
         bytes[] memory targetData = new bytes[](opsAmt);
-        uint256 USDCSupplyAmount = 4e6;
-        uint256 ASTRSupplyAmount = 4e18;
-        uint256 ASTRBorrowAmount = 3e18;
-        uint256 ASTRRepayAmount = 2e18;
-        uint256 ASTRWithdrawAmount = 1e18;
-        uint256 interestRateMode = 2;
+        // uint256 USDCSupplyAmount = 4e6;
+        // uint256 ASTRSupplyAmount = 4e18;
+        // uint256 ASTRBorrowAmount = 3e18;
+        // uint256 ASTRRepayAmount = 2e18;
+        // uint256 ASTRWithdrawAmount = 1e18;
+        // uint256 interestRateMode = 2;
         targetData[0] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
         targetData[1] = abi.encodeWithSignature("approve(address,uint256)", getAddress(sourceChain, "v3Pool"), type(uint256).max);
-        targetData[2] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "USDC"), USDCSupplyAmount, deployer.getAddress(UsdaiVaultName), 0);
-        targetData[3] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "ASTR"), ASTRSupplyAmount, deployer.getAddress(UsdaiVaultName), 0);
-        targetData[4] = abi.encodeWithSignature("borrow(address,uint256,uint256,uint16,address)", getAddress(sourceChain, "ASTR"), ASTRBorrowAmount, interestRateMode, 0, deployer.getAddress(UsdaiVaultName));
-        targetData[5] = abi.encodeWithSignature("repay(address,uint256,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRRepayAmount, interestRateMode, deployer.getAddress(UsdaiVaultName));
-        targetData[6] = abi.encodeWithSignature("withdraw(address,uint256,address)", getAddress(sourceChain, "ASTR"), ASTRWithdrawAmount, deployer.getAddress(UsdaiVaultName));
+        targetData[2] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "USDC"), 4e6, deployer.getAddress(UsdaiVaultName), 0);
+        targetData[3] = abi.encodeWithSignature("supply(address,uint256,address,uint16)", getAddress(sourceChain, "ASTR"), 4e18, deployer.getAddress(UsdaiVaultName), 0);
+        targetData[4] = abi.encodeWithSignature("borrow(address,uint256,uint256,uint16,address)", getAddress(sourceChain, "ASTR"), 3e18, 2, 0, deployer.getAddress(UsdaiVaultName));
+        targetData[5] = abi.encodeWithSignature("repay(address,uint256,uint256,address)", getAddress(sourceChain, "ASTR"), 2e18, 2, deployer.getAddress(UsdaiVaultName));
+        targetData[6] = abi.encodeWithSignature("withdraw(address,uint256,address)", getAddress(sourceChain, "ASTR"), 1e18, deployer.getAddress(UsdaiVaultName));
 
         address[] memory decodersAndSanitizers = new address[](opsAmt);  
         decodersAndSanitizers[0] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
@@ -115,6 +116,14 @@ contract SakeOp is Script, MinatoAddresses, MerkleTreeHelper, ContractNames {
         decodersAndSanitizers[5] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
         decodersAndSanitizers[6] = deployer.getAddress(UsdaiVaultDecoderAndSanitizerName);
         uint256[] memory values = new uint256[](opsAmt);
+
+        // extra
+        string memory filePath = "./leafs/USDAILeafs.json";
+        bytes32 merkleRoot = manageTree[manageTree.length - 1][0];
+
+        _generateLeafs(filePath, leafs, merkleRoot, manageTree);
+
+        manager.setManageRoot(auth, merkleRoot);
 
         // 5. Execute the actions through the manager
         manager.manageVaultWithMerkleVerification(
