@@ -304,6 +304,17 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
             }
         }
 
+        rolesAuthority.setUserRole(params.owner, MANAGER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MINTER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, BURNER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MANAGER_INTERNAL_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, SOLVER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, OWNER_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, MULTISIG_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, STRATEGIST_MULTISIG_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, STRATEGIST_ROLE, true);
+        rolesAuthority.setUserRole(params.owner, UPDATE_EXCHANGE_RATE_ROLE, true);
+
         if (configureDeployment.setupRoles) {
             // Setup roles.
             // MANAGER_ROLE
@@ -332,6 +343,10 @@ contract DeployArcticArchitectureWithoutFixedRate is Script, ContractNames {
                     bytes4(abi.encodeWithSignature("manage(address[],bytes[],uint256[])")),
                     true
                 );
+            }
+            if (!rolesAuthority.doesRoleHaveCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector)) {
+                rolesAuthority.setRoleCapability(MANAGER_ROLE, address(boringVault), BoringVault.setMaxTotalSupply.selector, true);
+                boringVault.setMaxTotalSupply(100000000000);
             }
             // MINTER_ROLE
             if (!rolesAuthority.doesRoleHaveCapability(MINTER_ROLE, address(boringVault), BoringVault.enter.selector)) {

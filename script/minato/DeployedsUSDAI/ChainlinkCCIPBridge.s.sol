@@ -23,7 +23,7 @@ contract ChainlinkCCIPBridgeScript is Script, MinatoAddresses, ContractNames, Me
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x57BC1a956a668c8338708c17a4844638c0D4b4EA);
+    address public destinationTellerAddress = address(0xF42B7Bac14F21e43db9544d175E1F3e57E4534aa);
     ChainlinkCCIPTeller sourceTeller;
     ChainlinkCCIPTeller destinationTeller;
     AccountantWithRateProviders accountant;

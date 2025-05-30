@@ -1181,7 +1181,7 @@ contract ChainValues {
     }
 
     function _addMinatoValues() private {
-        values[minato]["deployerAddress"] = 0x1A5D2Df8F24Cf79B3FddDe293856c1AD7685feB8.toBytes32();
+        values[minato]["deployerAddress"] = 0xfC77dA095A42F42b275A77346F9471354B678496.toBytes32();
         values[minato]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[minato]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[minato]["ASTR"] = 0x26e6f7c7047252DdE3dcBF26AA492e6a264Db655.toBytes32();
@@ -1192,7 +1192,7 @@ contract ChainValues {
     }
 
     function _addSepoliaValues() private {
-        values[sepolia]["deployerAddress"] = 0x0bD4DF93ccb0B383609636c3C8E7680c2B38301a.toBytes32();
+        values[sepolia]["deployerAddress"] = 0xfC77dA095A42F42b275A77346F9471354B678496.toBytes32();
         values[sepolia]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["USDC"] = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238.toBytes32();

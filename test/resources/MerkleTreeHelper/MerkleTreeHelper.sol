@@ -2387,16 +2387,15 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         leafs[leafIndex].argumentAddresses[0] = _usdc;
     }
 
-    // ========================================= Across =========================================
-    function _addAcrossLeafs(ManageLeaf[] memory leafs) internal {
+    // ========================================= Kyo =========================================
+    function _addKyoLeafs(ManageLeaf[] memory leafs) internal {
         // Approvals
-        address across = 0x5ef6C01E11889d86803e0B23e3cB3F9E9d97B662;
+        address kyoRouter = 0xe54Ae3B49438dfEf203fC79858270c35B834905C;
         address _usdc = getAddress(sourceChain, "USDC");
-        address baseSepoliaUSDC = 0x036CbD53842c5426634e7929541eC2318f3dCF7e;
-        address devOwner1 = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4;
+        address tokenOut = 0xA5D6513082EF1F157A33A066293309E74A8aF6Df;
         
         // Add USDC approval
-        if (!tokenToSpenderToApprovalInTree[_usdc][across]) {
+        if (!tokenToSpenderToApprovalInTree[_usdc][kyoRouter]) {
             unchecked {
                 leafIndex++;
             }
@@ -2405,30 +2404,30 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
                 false,
                 "approve(address,uint256)",
                 new address[](1),
-                "Approve USDC to Across",
+                "Approve USDC to Kyo",
                 getAddress(sourceChain, "rawDataDecoderAndSanitizer")
             );
-            leafs[leafIndex].argumentAddresses[0] = across;
-            tokenToSpenderToApprovalInTree[_usdc][across] = true;
+            leafs[leafIndex].argumentAddresses[0] = kyoRouter;
+            tokenToSpenderToApprovalInTree[_usdc][kyoRouter] = true;
         }
 
-        // depositV3
+        // exactInputSingle
         unchecked {
             leafIndex++;
         }
         leafs[leafIndex] = ManageLeaf(
-            across,
+            kyoRouter,
             false,
-            "depositV3(address,address,address,address,uint256,uint256,uint256,address,uint32,uint32,uint32,bytes)",
-            new address[](5),
-            "Bridge via Across",
-            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+            "exactInputSingle((address,address,uint24,address,uint256,uint256,uint256,uint160))",
+            new address[](3),
+            string.concat(
+                "Swap USDC for ", ERC20(tokenOut).symbol(), " using Kyo exactInputSingle"
+            ),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer") 
         );
-        leafs[leafIndex].argumentAddresses[0] = getAddress(sourceChain, "boringVault"); // depositor
-        leafs[leafIndex].argumentAddresses[1] = devOwner1; // recipient
-        leafs[leafIndex].argumentAddresses[2] = _usdc; // inputToken
-        leafs[leafIndex].argumentAddresses[3] = baseSepoliaUSDC; // outputToken
-        leafs[leafIndex].argumentAddresses[4] = address(0); // exclusiveRelayer
+        leafs[leafIndex].argumentAddresses[0] = _usdc;
+        leafs[leafIndex].argumentAddresses[1] = tokenOut;
+        leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); // recipient
     }
 
     // ========================================= Uniswap V3 =========================================

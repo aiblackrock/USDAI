@@ -23,7 +23,7 @@ contract sUSDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, 
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x3452b34aA0df41ebcf81726e217a34ea2FCC31b4);
+    address public destinationTellerAddress = address(0x17e900a2D8fBBfAC7114329e4eefA263C8EbdBf2);
     LayerZeroTeller sourceTeller;
     LayerZeroTeller destinationTeller;
     AccountantWithRateProviders accountant;

@@ -22,7 +22,7 @@ contract sUSDAILayerZeroBridgeScript is Script, SepoliaAddresses, ContractNames,
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x636e812694e6b3e1017dD7f19d95bb17Ad655777);
+    address public destinationTellerAddress = address(0x17e900a2D8fBBfAC7114329e4eefA263C8EbdBf2);
     LayerZeroTeller sourceTeller;
     LayerZeroTeller destinationTeller;
     AccountantWithRateProviders accountant;

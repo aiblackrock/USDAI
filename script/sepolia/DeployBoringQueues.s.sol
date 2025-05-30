@@ -151,6 +151,7 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueue.cancelOnChainWithdraw.selector, true);
         rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueue.replaceOnChainWithdraw.selector, true);
         rolesAuthority.setPublicCapability(solver, BoringSolver.boringRedeemSelfSolve.selector, true);
+        rolesAuthority.setPublicCapability(address(queue), BoringOnChainQueueWithTracking.cancelOnChainWithdrawUsingRequestId.selector, true);
         /// @notice By default the self solve functions are not made public.
 
         // CAN_SOLVE_ROLE
@@ -192,6 +193,13 @@ contract DeployBoringQueuesScript is Script, ContractNames, MerkleTreeHelper {
         // Give Queue the OnlyQueue role.
         rolesAuthority.setUserRole(address(queue), ONLY_QUEUE_ROLE, true);
         rolesAuthority.setUserRole(solver, CAN_SOLVE_ROLE, true);
+
+        // Set extra role
+        RolesAuthority vaultRolesAuthority = RolesAuthority(deployer.getAddress(UsdaiVaultRolesAuthorityName));
+        vaultRolesAuthority.setUserRole(solver, 12, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiVaultTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiLayerZeroTellerName), 3, true);
+        vaultRolesAuthority.setUserRole(deployer.getAddress(UsdaiChainlinkCCIPTellerName), 3, true);
 
         // Transfer ownership.
         queue.transferOwnership(globalOwner);

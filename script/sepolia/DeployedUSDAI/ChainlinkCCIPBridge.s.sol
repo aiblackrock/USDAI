@@ -23,7 +23,7 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x458f2A98B115465CA2fF93B8BF3c6f61CB9a5d59);
+    address public destinationTellerAddress = address(0x6902aa9fB7568C0B59a9FACCfC3EcAbBbC48B6Cb);
     ChainlinkCCIPTeller sourceTeller;
     ChainlinkCCIPTeller destinationTeller;
     AccountantWithRateProviders accountant;
@@ -31,7 +31,7 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
 
     uint256 public sharesToBridge = 1e5;
     // ERC20 internal constant NATIVE_ERC20 = ERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
-    // ERC20 internal constant weth = ERC20(0x4200000000000000000000000000000000000006);
+    ERC20 internal constant weth = ERC20(0x097D90c9d3E0B50Ca60e1ae45F6A81010f9FB534);
     uint256 public expectedFee = 1e18;
     uint8 public constant MINTER_ROLE = 2;
     uint8 public constant BURNER_ROLE = 3;
@@ -61,9 +61,10 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
         //     address(sourceTeller), sourceTeller.bridge.selector, true
         // );
 
-        // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), NATIVE_ERC20);
+        // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth);
         // // to minato
-        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), NATIVE_ERC20, expectedFee);
+        weth.approve(address(sourceTeller), 100e18);
+        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth, fee);
         
         vm.stopBroadcast();
     }
