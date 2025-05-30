@@ -23,7 +23,7 @@ contract USDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, M
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x8b801E87166692118c44b8107Ea0fBAF74d83e71);
+    address public destinationTellerAddress = address(0x0a00FfE28c99F651491fA0F26FA50Ce5AF8B322a);
     ILayerZeroEndpointV2 endpoint;
     LayerZeroTeller sourceTeller;
     LayerZeroTeller destinationTeller;

@@ -23,7 +23,7 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x89eb897435c9402a3DBBb97f1D3E6e31531e11F7);
+    address public destinationTellerAddress = address(0xF42B7Bac14F21e43db9544d175E1F3e57E4534aa);
     ChainlinkCCIPTeller sourceTeller;
     ChainlinkCCIPTeller destinationTeller;
     AccountantWithRateProviders accountant;
