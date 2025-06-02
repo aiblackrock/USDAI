@@ -5,7 +5,7 @@ import "forge-std/Script.sol";
 import {ERC20} from "@solmate/tokens/ERC20.sol";
 import { ILayerZeroEndpointV2 } from "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol";
 import {BoringVault} from "src/base/BoringVault.sol";
-import {ChainlinkCCIPTeller} from "src/base/Roles/CrossChain/Bridges/CCIP/ChainlinkCCIPTeller.sol";
+import {LayerZeroTeller} from "src/base/Roles/CrossChain/Bridges/LayerZero/LayerZeroTeller.sol";
 import {AccountantWithRateProviders} from "src/base/Roles/AccountantWithRateProviders.sol";
 import {MinatoAddresses} from "test/resources/MinatoAddresses.sol";
 import {Deployer} from "src/helper/Deployer.sol";
@@ -19,20 +19,19 @@ import {console} from "forge-std/console.sol";
  * @notice This script demonstrates how to deposit USDC and ASTR into the USDAI vault on Minato
  * @dev Run with: forge script script/USDAIIntegrationTest/Deposit.sol --rpc-url $MINATO_RPC_URL
  */
-contract ChainlinkCCIPBridgeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
+contract sUSDAILayerZeroBridgeScript is Script, MinatoAddresses, ContractNames, MerkleTreeHelper {
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x05b30705aB9147B62A94cd8157b03a0d0f597eDd);
-    ChainlinkCCIPTeller sourceTeller;
-    ChainlinkCCIPTeller destinationTeller;
+    address public destinationTellerAddress = address(0x17e900a2D8fBBfAC7114329e4eefA263C8EbdBf2);
+    LayerZeroTeller sourceTeller;
+    LayerZeroTeller destinationTeller;
     AccountantWithRateProviders accountant;
     RolesAuthority rolesAuthority;
 
     uint256 public sharesToBridge = 1e5;
-    // ERC20 internal constant NATIVE_ERC20 = ERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
-    ERC20 internal constant weth = ERC20(0x4200000000000000000000000000000000000006);
-    // uint256 public expectedFee = 1e18;
+    ERC20 internal constant NATIVE_ERC20 = ERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
+    uint256 public expectedFee = 1e18;
     uint8 public constant MINTER_ROLE = 2;
     uint8 public constant BURNER_ROLE = 3;
 
@@ -42,8 +41,8 @@ contract ChainlinkCCIPBridgeScript is Script, MinatoAddresses, ContractNames, Me
         deployer = Deployer(getAddress(sourceChain, "deployerAddress"));
         
         vault = BoringVault(payable(deployer.getAddress(sUsdaiVaultName)));
-        sourceTellerAddress = deployer.getAddress(sUsdaiChainlinkCCIPTellerName);
-        sourceTeller = ChainlinkCCIPTeller(sourceTellerAddress);
+        sourceTellerAddress = deployer.getAddress(sUsdaiLayerZeroTellerName);
+        sourceTeller = LayerZeroTeller(sourceTellerAddress);
         accountant = AccountantWithRateProviders(deployer.getAddress(sUsdaiVaultAccountantName));
         rolesAuthority = RolesAuthority(deployer.getAddress(sUsdaiVaultRolesAuthorityName));
     }
@@ -53,18 +52,20 @@ contract ChainlinkCCIPBridgeScript is Script, MinatoAddresses, ContractNames, Me
         vm.startBroadcast(privateKey);
 
         // bridge setup
-        sourceTeller.addChain(ccipSepoliaChainSelector, true, true, destinationTellerAddress, 1000000);
-        sourceTeller.allowMessagesFromChain(ccipSepoliaChainSelector, destinationTellerAddress);
-        sourceTeller.allowMessagesToChain(ccipSepoliaChainSelector, destinationTellerAddress, 1000000);
+        sourceTeller.addChain(layerZeroSepoliaEndpointId, true, true, destinationTellerAddress, 1000000);
+        sourceTeller.allowMessagesFromChain(layerZeroSepoliaEndpointId, destinationTellerAddress);
+        sourceTeller.allowMessagesToChain(layerZeroSepoliaEndpointId, destinationTellerAddress, 1000000);
 
+        // sourceTeller.setAuthority(rolesAuthority);
+        // rolesAuthority.setUserRole(address(sourceTeller), MINTER_ROLE, true);
+        // rolesAuthority.setUserRole(address(sourceTeller), BURNER_ROLE, true);
         // rolesAuthority.setPublicCapability(
         //     address(sourceTeller), sourceTeller.bridge.selector, true
         // );
 
-        uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipSepoliaChainSelector), weth);
-        weth.approve(address(sourceTeller), fee);
+        uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20);
         // to sepolia
-        sourceTeller.bridge(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipSepoliaChainSelector), weth, fee);
+        sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(layerZeroSepoliaEndpointId), NATIVE_ERC20, expectedFee);
         
         vm.stopBroadcast();
     }
