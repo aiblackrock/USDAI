@@ -25,11 +25,13 @@ contract ChainValues {
     string public constant minato = "minato";
     string public constant soneium = "soneium";
     string public constant sepolia = "sepolia";
+    string public constant plume = "plume";
     // Bridging constants.
     uint64 public constant ccipArbitrumChainSelector = 4949039107694359620;
     uint64 public constant ccipMainnetChainSelector = 5009297550715157269;
     uint64 public constant ccipMinatoChainSelector = 686603546605904534;
     uint64 public constant ccipSepoliaChainSelector = 16015286601757825753;
+    uint64 public constant ccipPlumeChainSelector = 13874588925447303949;
     uint32 public constant layerZeroBaseEndpointId = 30184;
     uint32 public constant layerZeroMainnetEndpointId = 30101;
     uint32 public constant layerZeroOptimismEndpointId = 30111;
@@ -39,6 +41,7 @@ contract ChainValues {
     uint32 public constant layerZeroCornEndpointId = 30331; 
     uint32 public constant layerZeroMinatoEndpointId = 40334;
     uint32 public constant layerZeroSepoliaEndpointId = 40161;
+    uint32 public constant layerZeroPlumeEndpointId = 40304; // or 40329?
     uint32 public constant hyperlaneMainnetEndpointId = 1;
     uint32 public constant hyperlaneEclipseEndpointId = 1408864445;
 
@@ -96,6 +99,7 @@ contract ChainValues {
         _addHoleskyValues();
         _addMinatoValues();
         _addSepoliaValues();
+        _addPlumeValues();
     }
 
     function _addMainnetValues() private {
@@ -1200,6 +1204,13 @@ contract ChainValues {
         values[sepolia]["USDOExpress"] = 0xD65eF7fF5e7B3DBCCD07F6637Dc47101311ecEe6.toBytes32();
         // CCIP token transfers.
         values[sepolia]["ccipRouter"] = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59.toBytes32();
+    }
+
+    function _addPlumeValues() private {
+        values[plume]["deployerAddress"] = 0x62165b41138c5841c0a54137E6470FBfEdd18a2e.toBytes32();
+        values[plume]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[plume]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
+        values[plume]["PUSD"] = 0x1E0E030AbCb4f07de629DCCEa458a271e0E82624.toBytes32();
     }
 
     function _addMantleValues() private {

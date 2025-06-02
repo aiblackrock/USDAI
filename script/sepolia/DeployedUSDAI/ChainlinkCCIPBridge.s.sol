@@ -23,7 +23,7 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0x6902aa9fB7568C0B59a9FACCfC3EcAbBbC48B6Cb);
+    address public destinationTellerAddress = address(0x0dF7c4bBC416b5049E6ACe09aaD43964236FE978);
     ChainlinkCCIPTeller sourceTeller;
     ChainlinkCCIPTeller destinationTeller;
     AccountantWithRateProviders accountant;
@@ -53,18 +53,18 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
         vm.startBroadcast(privateKey);
 
         // bridge setup
-        sourceTeller.addChain(ccipMinatoChainSelector, true, true, destinationTellerAddress, 1000000);
-        sourceTeller.allowMessagesFromChain(ccipMinatoChainSelector, destinationTellerAddress);
-        sourceTeller.allowMessagesToChain(ccipMinatoChainSelector, destinationTellerAddress, 1000000);
+        // sourceTeller.addChain(ccipPlumeChainSelector, true, true, destinationTellerAddress, 1000000);
+        // sourceTeller.allowMessagesFromChain(ccipPlumeChainSelector, destinationTellerAddress);
+        // sourceTeller.allowMessagesToChain(ccipPlumeChainSelector, destinationTellerAddress, 1000000);
 
         // rolesAuthority.setPublicCapability(
         //     address(sourceTeller), sourceTeller.bridge.selector, true
         // );
 
-        // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth);
-        // // to minato
+        uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipPlumeChainSelector), weth);
+        // to minato
         weth.approve(address(sourceTeller), 100e18);
-        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth, fee);
+        sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipPlumeChainSelector), weth, fee);
         
         vm.stopBroadcast();
     }

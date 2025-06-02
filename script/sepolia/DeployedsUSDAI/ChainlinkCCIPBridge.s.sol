@@ -23,7 +23,7 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
     Deployer public deployer;
     BoringVault vault;
     address public sourceTellerAddress;
-    address public destinationTellerAddress = address(0xF42B7Bac14F21e43db9544d175E1F3e57E4534aa);
+    address public destinationTellerAddress = address(0x05b30705aB9147B62A94cd8157b03a0d0f597eDd);
     ChainlinkCCIPTeller sourceTeller;
     ChainlinkCCIPTeller destinationTeller;
     AccountantWithRateProviders accountant;
@@ -53,18 +53,18 @@ contract ChainlinkCCIPBridgeScript is Script, SepoliaAddresses, ContractNames, M
         vm.startBroadcast(privateKey);
 
         // bridge setup
-        sourceTeller.addChain(ccipMinatoChainSelector, true, true, destinationTellerAddress, 1000000);
-        sourceTeller.allowMessagesFromChain(ccipMinatoChainSelector, destinationTellerAddress);
-        sourceTeller.allowMessagesToChain(ccipMinatoChainSelector, destinationTellerAddress, 1000000);
+        sourceTeller.addChain(ccipPlumeChainSelector, true, true, destinationTellerAddress, 1000000);
+        sourceTeller.allowMessagesFromChain(ccipPlumeChainSelector, destinationTellerAddress);
+        sourceTeller.allowMessagesToChain(ccipPlumeChainSelector, destinationTellerAddress, 1000000);
 
         // rolesAuthority.setPublicCapability(
         //     address(sourceTeller), sourceTeller.bridge.selector, true
         // );
 
-        uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth);
-        weth.approve(address(sourceTeller), 100e18);
-        // to minato
-        sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipMinatoChainSelector), weth, expectedFee);
+        // uint256 fee = sourceTeller.previewFee(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipPlumeChainSelector), weth);
+        // weth.approve(address(sourceTeller), 100e18);
+        // // to minato
+        // sourceTeller.bridge{value: fee}(uint96(sharesToBridge), vm.addr(privateKey), abi.encode(ccipPlumeChainSelector), weth, expectedFee);
         
         vm.stopBroadcast();
     }
