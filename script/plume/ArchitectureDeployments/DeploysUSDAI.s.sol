@@ -21,8 +21,8 @@ contract DeploysUSDAIScript is DeployArcticArchitectureWithoutFixedRate, PlumeAd
     uint256 public privateKey;
 
     // Deployment parameters
-    string public boringVaultName = "sUSDAI boring vault";
-    string public boringVaultSymbol = "sUSDAI";
+    string public boringVaultName = "sSuperUSD boring vault";
+    string public boringVaultSymbol = "sSuperUSD";
     uint8 public boringVaultDecimals = 6;
     address public owner = dev0Address;
 

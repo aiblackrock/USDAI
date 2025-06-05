@@ -21,8 +21,8 @@ contract DeployUSDAIScript is DeployArcticArchitecture, SepoliaAddresses {
     uint256 public privateKey;
 
     // Deployment parameters
-    string public boringVaultName = "USDAI boring vault";
-    string public boringVaultSymbol = "USDAI";
+    string public boringVaultName = "SuperUSD boring vault";
+    string public boringVaultSymbol = "SuperUSD";
     uint8 public boringVaultDecimals = 6;
     address public owner = dev0Address;
 
