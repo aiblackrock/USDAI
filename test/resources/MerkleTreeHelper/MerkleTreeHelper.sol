@@ -2430,6 +2430,39 @@ contract MerkleTreeHelper is CommonBase, ChainValues {
         leafs[leafIndex].argumentAddresses[2] = getAddress(sourceChain, "boringVault"); // recipient
     }
 
+    // ========================================= Transfer =========================================
+
+    function _addTransferLeafs(ManageLeaf[] memory leafs, ERC20 token, address to) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(token),
+            false,
+            "transfer(address,uint256)",
+            new address[](1),
+            string.concat("Transfer ", token.symbol(), " to ", vm.toString(to)),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = to;
+    }
+
+    function _addApprovalLeafs(ManageLeaf[] memory leafs, ERC20 token, address spender) internal {
+        unchecked {
+            leafIndex++;
+        }
+        leafs[leafIndex] = ManageLeaf(
+            address(token),
+            false,
+            "approve(address,uint256)",
+            new address[](1),
+            string.concat("Approve ", vm.toString(spender), " to spend ", token.name()),
+            getAddress(sourceChain, "rawDataDecoderAndSanitizer")
+        );
+        leafs[leafIndex].argumentAddresses[0] = spender;
+        tokenToSpenderToApprovalInTree[address(token)][spender] = true;
+    }
+
     // ========================================= Uniswap V3 =========================================
 
     function _addUniswapV3Leafs(ManageLeaf[] memory leafs, address[] memory token0, address[] memory token1) internal {

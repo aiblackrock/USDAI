@@ -1191,6 +1191,7 @@ contract ChainValues {
         values[minato]["ASTR"] = 0x26e6f7c7047252DdE3dcBF26AA492e6a264Db655.toBytes32();
         values[minato]["USDC"] = 0xE9A198d38483aD727ABC8b0B1e16B2d338CF0391.toBytes32();
         values[minato]["v3Pool"] = 0xEc38a5Cd88E87Fec0D10822DE8a3D6dB144931DA.toBytes32();
+        values[minato]["USDAI"] = 0x874bCD1AfDfb0864F9362b79B61e37b5c1c9d574.toBytes32();
         // CCIP token transfers.
         values[minato]["ccipRouter"] = 0x443a1bce545d56E2c3f20ED32eA588395FFce0f4.toBytes32();
     }
@@ -1200,6 +1201,7 @@ contract ChainValues {
         values[sepolia]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[sepolia]["USDC"] = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238.toBytes32();
+        values[sepolia]["USDAI"] = 0x874bCD1AfDfb0864F9362b79B61e37b5c1c9d574.toBytes32();
 
         values[sepolia]["USDOExpress"] = 0xD65eF7fF5e7B3DBCCD07F6637Dc47101311ecEe6.toBytes32();
         // CCIP token transfers.
@@ -1211,6 +1213,7 @@ contract ChainValues {
         values[plume]["dev0Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[plume]["dev1Address"] = 0x8Ab8aEEf444AeE718A275a8325795FE90CF162c4.toBytes32();
         values[plume]["PUSD"] = 0x1E0E030AbCb4f07de629DCCEa458a271e0E82624.toBytes32();
+        values[plume]["USDAI"] = 0x1C6DfA6C99d83aE8b872C32119575ce24407767C.toBytes32();
     }
 
     function _addMantleValues() private {
